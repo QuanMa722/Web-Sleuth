@@ -78,7 +78,7 @@ def main():
     """
     response = get_reap()  # 获取响应数据
     get_infor(response)  # 解析数据并保存到文件中
-    get_wordcloud()  # 生成词云图
+    # get_wordcloud()  # 生成词云图
 
 
 if __name__ == '__main__':
