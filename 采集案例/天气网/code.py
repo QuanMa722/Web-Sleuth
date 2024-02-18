@@ -87,10 +87,10 @@ def get_single_data(city, year, month, month_day_dict):
             get_txt(city, text_list)
         # 关闭浏览器
         driver.quit()
-    except Exception as e:
+    except Exception as error:
         # 一般报错是因为缺失数据
         print("报错: 数据缺失，无法定位")
-        print(e)
+        print(error)
 
 
 def get_data(city, year, month_day_dict):
@@ -124,10 +124,10 @@ def get_data(city, year, month_day_dict):
             print(f"第{every_month}月已采集完毕，休息{num_break}秒。")
             time.sleep(num_break)
 
-    except Exception as e:
+    except Exception as error:
         # 一般报错是因为缺失数据
         print("报错: 数据缺失，无法定位")
-        print(e)
+        print(error)
     driver.quit()
 
 
