@@ -51,11 +51,13 @@ def get_infor():
         "日期": item["dtm"],
     }
 
-    print(data_dict)
+    return data_dict
 
 
 if __name__ == '__main__':
-    get_infor()
+
+    data_dict = get_infor()
+    print(data_dict)
 
 
 

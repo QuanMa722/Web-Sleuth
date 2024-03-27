@@ -14,17 +14,22 @@ def get_data():
     html = response.read().decode("utf-8")
     soup = BeautifulSoup(html, 'html.parser')
 
-    title = soup.find('h1').get_text().strip()
-    text = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
+    title_str = soup.find('h1').get_text().strip()
+    text_str = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
 
-    print(title)
-    print(text)
+    return title_str, text_str
 
 
 if __name__ == '__main__':
+
     try:
-        get_data()
+
+        title_str, text_str = get_data()
+        print(title_str)
+        print(text_str)
+
     except Exception as e:
+
         print(f"An error occurred: {e}")
 
 

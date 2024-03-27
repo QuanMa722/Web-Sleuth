@@ -29,6 +29,7 @@ def get_resp():
     }
 
     response = requests.post(url=url, headers=headers, data=data)
+    print(response.status_code)
     get_infor(response)
 
     return None
@@ -37,6 +38,7 @@ def get_resp():
 def get_infor(response):
 
     text = json.loads(response.text)["pageView"]
+    print(text)
     find_text = re.findall(r'<td>(.*?)</td>', text)
     elements = find_text[1:]
     filtered_elements = [el for el in elements if not re.match(r'<.*?>', el)]

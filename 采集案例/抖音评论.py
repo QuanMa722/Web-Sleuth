@@ -1,28 +1,17 @@
-import json
 
 # -*- coding: utf-8 -*-
-# 采集抖音网页版用户评论数据
+# https://www.douyin.com
 
-# 导入需要的库
-from fake_useragent import UserAgent  # 用于生成随机的User-Agent
-import requests  # 用于发送HTTP请求
-import datetime  # 用于处理时间
-import time  # 用于暂停程序执行
+from fake_useragent import UserAgent
+import requests
+import datetime
+import time
+import json
 
 
-# 爬取评论数据
 def get_comment(headers: dict, aweme_id: str, page_num: int) -> None:
-    """
-    爬取指定抖音视频的评论数据并打印每条评论的信息。
 
-    :param headers: dict，请求头，包括用户代理和cookie信息。
-    :param aweme_id: str，抖音视频的ID。
-    :param page_num: int，需要爬取的评论页数。
-    :return: None，将评论信息打印出来。
-    """
-    # 评论条数
     cursor = 0
-    # 评论页数
     page = 0
 
     while True:
@@ -34,59 +23,41 @@ def get_comment(headers: dict, aweme_id: str, page_num: int) -> None:
         }
         url = f"https://www.douyin.com/aweme/v1/web/comment/list?"
 
-        time.sleep(1)  # 暂停1秒，防止请求过于频繁被封IP
+        time.sleep(1)
 
-        json_text = get_resp(url, params, headers).text  # 发送请求获取响应
-
+        json_text = get_resp(url, params, headers).text
         json_data = json.loads(json_text)
 
         for comment in json_data["comments"]:
-            get_data(comment)  # 处理评论数据并打印评论信息
+            get_data(comment)
 
-        cursor += 20  # 更新评论条数
-        page += 1  # 更新评论页数
+        cursor += 20
+        page += 1
 
         print(f"第{page}页爬取完毕。")
         if page == page_num:
             break
+
     return None
 
 
-# 发送请求获取响应
 def get_resp(url: str, params: dict, headers: dict) -> requests.Response:
-    """
-    发送GET请求获取指定URL的响应数据。
 
-    :param url: str，请求的URL。
-    :param params: dict，请求的参数。
-    :param headers: dict，请求头，包括用户代理和cookie信息。
-    :return: requests.Response，返回响应对象。
-    """
     response = requests.get(url, params=params, headers=headers)
     response.encoding = "utf-8"
+
     return response
 
 
-# 将时间戳转换为 yyyy-mm-dd 格式
 def get_time(time: int) -> str:
-    """
-    将时间戳转换为指定格式的日期字符串。
 
-    :param time: int，时间戳。
-    :return: str，格式化后的日期字符串。
-    """
     return str(datetime.datetime.fromtimestamp(time))[0:11]
 
 
-# 处理评论数据
 def get_data(comment: dict) -> None:
-    """
-    处理每条评论数据并打印评论信息。
-    :param comment: dict，评论数据。
-    :return: None，将评论信息打印出来。
-    """
+
     try:
-        # 处理时间
+
         time_correct = get_time(comment["create_time"])
 
         data_dict = {
@@ -98,7 +69,7 @@ def get_data(comment: dict) -> None:
             "评论内容": comment["text"].strip().replace('\n', ""),
         }
 
-        print(data_dict)  # 打印评论信息
+        print(data_dict)
         with open("test.txt", "a") as f:
             try:
                 f.writelines(str(data_dict))

@@ -16,7 +16,7 @@ import re  # 用于正则表达式匹配
 
 
 # 设置Edge WebDriver的路径
-edge_driver_path = r"D:\APP\msedgedriver.exe"
+edge_driver_path = r"D:\APP\edgedriver_win64\msedgedriver.exe"
 # 创建Edge浏览器的WebDriver实例
 driver = webdriver.Edge(executable_path=edge_driver_path)
 
