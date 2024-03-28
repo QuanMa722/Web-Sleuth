@@ -19,7 +19,7 @@ def get_resp():
 
     data = {
         "p": 5582,
-        "key": "", 
+        "key": "",
         "level": 0,
         "cat": "",
         "prov": 0,
@@ -29,7 +29,6 @@ def get_resp():
     }
 
     response = requests.post(url=url, headers=headers, data=data)
-    print(response.status_code)
     get_infor(response)
 
     return None
@@ -37,9 +36,9 @@ def get_resp():
 
 def get_infor(response):
 
-    text = json.loads(response.text)["pageView"]
-    print(text)
-    find_text = re.findall(r'<td>(.*?)</td>', text)
+    text_json = json.loads(response.text)["pageView"]
+
+    find_text = re.findall(r'<td>(.*?)</td>', text_json)
     elements = find_text[1:]
     filtered_elements = [el for el in elements if not re.match(r'<.*?>', el)]
 
@@ -55,8 +54,9 @@ def get_infor(response):
 
 
 if __name__ == '__main__':
+
     try:
-        page_num = int(input("page:"))
         get_resp()
+
     except Exception as e:
         print(f"An error occurred: {e}")

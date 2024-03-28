@@ -86,19 +86,19 @@ def get_data(comment: dict) -> None:
 
 if __name__ == '__main__':
 
-    """
-    主函数，用于控制整个程序流程
-    """
-    # 输入参数
-    cookie = input("cookie:")
-    aweme_id = input("aweme_id:")
-    page_num = int(input("请输入爬取的页数:"))
+    try:
+        cookie = input("cookie:")
+        aweme_id = input("aweme_id:")
+        page_num = int(input("请输入爬取的页数:"))
 
-    # 设置随机ua
-    ua = UserAgent()
-    headers = {
-        "User-Agent": ua.random,
-        "cookie": cookie,
-    }
-    comment_count = 0
-    get_comment(headers, aweme_id, page_num)
+        ua = UserAgent()
+        headers = {
+            "User-Agent": ua.random,
+            "cookie": cookie,
+        }
+        comment_count = 0
+        get_comment(headers, aweme_id, page_num)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+

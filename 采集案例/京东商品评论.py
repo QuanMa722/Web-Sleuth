@@ -31,6 +31,14 @@ def get_comment():
         content = index['content']
         print(content)
 
+    return None
+
 
 if __name__ == '__main__':
-    get_comment()
+
+    try:
+        get_comment()
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+

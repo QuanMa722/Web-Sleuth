@@ -23,13 +23,12 @@ def get_data():
 if __name__ == '__main__':
 
     try:
-
         title_str, text_str = get_data()
         print(title_str)
         print(text_str)
 
     except Exception as e:
-
         print(f"An error occurred: {e}")
+
 
 

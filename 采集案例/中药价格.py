@@ -56,8 +56,13 @@ def get_infor():
 
 if __name__ == '__main__':
 
-    data_dict = get_infor()
-    print(data_dict)
+    try:
+        data_dict = get_infor()
+        print(data_dict)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 
 
