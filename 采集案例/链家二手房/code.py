@@ -14,12 +14,7 @@ import re  # 用于正则表达式匹配
 
 
 def get_anti() -> tuple:
-    """
-    获取随机的User-Agent和代理IP。
 
-    返回:
-    tuple: 包含随机User-Agent和代理IP的元组。
-    """
     ua = UserAgent()
     headers = {
         'User-Agent': ua.random  # 随机ua
@@ -48,17 +43,7 @@ def get_anti() -> tuple:
 
 # 获取每页的URL，并使用多线程进行数据采集
 def get_url(area_list: list, page_list: list, num_threads: int) -> None:
-    """
-    获取每页的URL，并使用多线程进行数据采集。
 
-    参数:
-    area_list (list): 地区列表，包括城市和区域。
-    page_list (list): 价格区间和页数列表。
-    num_threads (int): 并发线程的数量。
-
-    返回:
-    无返回值，将采集到的数据打印出来并写入文件。
-    """
     threads1 = []  # 构建线程池1
     # 根据报错信息修改代码
     try:
@@ -87,20 +72,7 @@ def get_url(area_list: list, page_list: list, num_threads: int) -> None:
 
 
 def process_page(area_list: list, single_list: list, headers: dict, proxies: tuple, page: int, num_threads: int) -> None:
-    """
-    第一个多线程的目标函数，用于启动第二个多线程。
 
-    参数:
-    area_list (list): 地区列表，包括城市和区域。
-    single_list (list): 价格区间和页数信息。
-    headers (dict): 请求头，包括User-Agent信息。
-    proxies (dict): 代理IP信息。
-    page (int): 页数。
-    num_threads (int): 并发线程的数量。
-
-    返回:
-    无返回值，启动第二个多线程进行数据采集。
-    """
     # 初始url
     url = f"https://{area_list[0]}.lianjia.com/ershoufang/{area_list[1]}/pg{page}bp{single_list[0]}ep{single_list[1]}"
     # 发送请求
@@ -130,15 +102,7 @@ def process_page(area_list: list, single_list: list, headers: dict, proxies: tup
 
 # 获取数据
 def get_data(url_list: list) -> None:
-    """
-    获取每页房屋信息的数据。
 
-    参数:
-    url_list (list): 包含每页URL的列表。
-
-    返回:
-    无返回值，将采集到的数据打印出来并写入文件。
-    """
     # 遍历每页的url
     for every_single_url in url_list:
         # 防止限制
@@ -201,34 +165,35 @@ def get_data(url_list: list) -> None:
 
 
 def main():
-    """
-    主函数，用于控制整个程序流程
-    """
-    # 计算时间
-    start_time = time.time()
 
-    # 更换地区
-    area_list = ["wh", "jianghxia"]
+    try:
 
-    # 价格区间和页数
-    page_list = [
-        [1, 100, 80]
-    ]
+        start_time = time.time()
 
-    # 线程数限制
-    num_threads = 50
+        area_list = ["wh", "jianghxia"]
 
-    get_url(area_list, page_list, num_threads)
-    end_time = time.time()
-    execution_time = end_time - start_time
-    print(f"程序运行时间为：{execution_time}秒")
+        # 价格区间和页数
+        page_list = [
+            [1, 100, 80]
+        ]
 
-    # 计算采集速度
-    page_num = sum([num[2] for num in page_list])
-    print("采集速度约为：" + str(round((((page_num * 30) / execution_time) * 60))) + "条/分钟")
+        # 线程数限制
+        num_threads = 50
+
+        get_url(area_list, page_list, num_threads)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"程序运行时间为：{execution_time}秒")
+
+        # 计算采集速度
+        page_num = sum([num[2] for num in page_list])
+        print("采集速度约为：" + str(round((((page_num * 30) / execution_time) * 60))) + "条/分钟")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
-# 主程序
 if __name__ == '__main__':
+
     main()
 

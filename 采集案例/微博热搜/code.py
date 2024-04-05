@@ -10,6 +10,10 @@ import json
 
 
 def get_resp() -> requests.Response:
+    """
+    发送请求
+    :return: response
+    """
 
     ua = UserAgent()
     headers = {
@@ -27,6 +31,10 @@ def get_resp() -> requests.Response:
 
 
 def get_data() -> None:
+    """
+    获取数据
+    :return: None
+    """
 
     response = get_resp()
 
@@ -49,7 +57,11 @@ def get_data() -> None:
     return None
 
 
-def search_wordcloud():
+def search_wordcloud() -> None:
+    """
+    绘制词云图
+    :return: None
+    """
 
     with open("stopwords.txt", "r", encoding="utf-8") as stop_file:
         stopwords_list = stop_file.readlines()
@@ -81,7 +93,10 @@ def search_wordcloud():
 if __name__ == '__main__':
 
     try:
+        # 获取数据并写入txt文件中
         get_data()
+
+        # 词云图
         # search_wordcloud()
 
     except Exception as e:
