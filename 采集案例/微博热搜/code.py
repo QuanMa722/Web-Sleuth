@@ -39,17 +39,17 @@ def get_data() -> None:
     response = get_resp()
 
     try:
-        with open("search.txt", "a", encoding="utf-8") as f:
+        with open("search.txt", mode="a", encoding="utf-8") as f:
 
             search_json = json.loads(response.text)
-            search_top_str = search_json["data"]["hotgovs"][0]["note"]
-            f.write(search_top_str + "\n")
-            print(f"The top hot search :{search_top_str}")
+            search_top: str = search_json["data"]["hotgovs"][0]["note"]
+            f.write(search_top + "\n")
+            print(f"The top hot search :{search_top}")
 
             for num in range(0, 50):
-                search_str = search_json["data"]["realtime"][num]["note"]
-                f.write(search_str + "\n")
-                print(f"The hot search :{search_str}")
+                search: str = search_json["data"]["realtime"][num]["note"]
+                f.write(search + "\n")
+                print(f"The hot search :{search}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -63,7 +63,7 @@ def search_wordcloud() -> None:
     :return: None
     """
 
-    with open("stopwords.txt", "r", encoding="utf-8") as stop_file:
+    with open("stopwords.txt", mode="r", encoding="utf-8") as stop_file:
         stopwords_list = stop_file.readlines()
     stopwords_list = [word.strip() for word in stopwords_list]
 
