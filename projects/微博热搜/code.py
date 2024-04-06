@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # https://weibo.com/ajax/side/hotSearch
 
@@ -64,17 +63,17 @@ def search_wordcloud() -> None:
     """
 
     with open("stopwords.txt", mode="r", encoding="utf-8") as stop_file:
-        stopwords_list = stop_file.readlines()
-    stopwords_list = [word.strip() for word in stopwords_list]
+        stopwords: list = stop_file.readlines()
+    stopwords = [word.strip() for word in stopwords]
 
-    word_delete = []
-    stopwords_list.extend(word_delete)
+    word_delete: list = []
+    stopwords.extend(word_delete)
 
     with open("search.txt", "r", encoding="utf-8") as search_file:
         search_file_read = search_file.read()
 
     ls = jieba.lcut(search_file_read)
-    ls = [word for word in ls if word not in stopwords_list]
+    ls = [word for word in ls if word not in stopwords]
     txt = " ".join(ls)
 
     word_cloud = wordcloud.WordCloud(

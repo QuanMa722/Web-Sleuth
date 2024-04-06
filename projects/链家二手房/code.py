@@ -100,6 +100,7 @@ def process_page(area_list: list, single_list: list, headers: dict, proxies: tup
         print(f"An error occurred: {e}")  # 打印报错信息
     return None
 
+
 # 获取数据
 def get_data(url_list: list) -> None:
 
