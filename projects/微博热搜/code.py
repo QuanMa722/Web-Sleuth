@@ -38,7 +38,7 @@ def get_data() -> None:
     response = get_resp()
 
     try:
-        with open("search.txt", mode="a", encoding="utf-8") as f:
+        with open(file="search.txt", mode="a", encoding="utf-8") as f:
 
             search_json = json.loads(response.text)
             search_top: str = search_json["data"]["hotgovs"][0]["note"]
@@ -89,7 +89,7 @@ def search_wordcloud() -> None:
     return None
 
 
-if __name__ == '__main__':
+def main():
 
     try:
         # 获取数据并写入txt文件中
@@ -100,6 +100,12 @@ if __name__ == '__main__':
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
+if __name__ == '__main__':
+    main()
+
+
 
 
 

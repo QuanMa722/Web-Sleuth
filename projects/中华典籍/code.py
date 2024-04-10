@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # https://www.zhonghuadiancang.com/lishizhuanji/mingshi
 
@@ -14,21 +13,31 @@ def get_data():
     html = response.read().decode("utf-8")
     soup = BeautifulSoup(html, 'html.parser')
 
-    title_str = soup.find('h1').get_text().strip()
-    text_str = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
+    title: str = soup.find('h1').get_text().strip()
+    text: str = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
 
-    return title_str, text_str
+    with open(file="text.txt", mode="a", encoding="utf-8") as f:
+        f.write(title + "\n")
+        f.write(text + "\n")
+
+    return title, text
 
 
-if __name__ == '__main__':
+def main():
 
     try:
-        title_str, text_str = get_data()
-        print(title_str)
-        print(text_str)
+        title, text = get_data()
+        print(title)
+        print(text)
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
+if __name__ == '__main__':
+    main()
+
+
 
 
 
