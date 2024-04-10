@@ -18,7 +18,7 @@ def get_resp():
     }
 
     data = {
-        "p": 5582,
+        "p": 13,
         "key": "",
         "level": 0,
         "cat": "",
@@ -38,17 +38,21 @@ def get_infor(response):
 
     text_json = json.loads(response.text)["pageView"]
 
-    find_text = re.findall(r'<td>(.*?)</td>', text_json)
-    elements = find_text[1:]
-    filtered_elements = [el for el in elements if not re.match(r'<.*?>', el)]
+    if text_json[6] != "t":
+        print(4)
 
-    num = int(len(filtered_elements) / 6)
-    result_list = []
-    count = 0
-    for _ in range(num):
-        result_list.append(filtered_elements[count:count + 6])
-        print(filtered_elements[count:count + 6])
-        count += 6
+    else:
+        find_text = re.findall(r'<td>(.*?)</td>', text_json)
+        elements = find_text[1:]
+        filtered_elements = [el for el in elements if not re.match(r'<.*?>', el)]
+
+        num = int(len(filtered_elements) / 6)
+        result_list = []
+        count = 0
+        for _ in range(num):
+            result_list.append(filtered_elements[count:count + 6])
+            print(filtered_elements[count:count + 6])
+            count += 6
 
     return None
 
