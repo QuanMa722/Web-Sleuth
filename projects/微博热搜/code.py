@@ -10,7 +10,7 @@ import json
 
 def get_resp() -> requests.Response:
     """
-    发送请求
+    send a request
     :return: response
     """
 
@@ -18,6 +18,7 @@ def get_resp() -> requests.Response:
     headers = {
         'User-Agent': ua.random
     }
+
     url = "https://weibo.com/ajax/side/hotSearch"
 
     response = requests.get(url=url, headers=headers)
@@ -29,9 +30,9 @@ def get_resp() -> requests.Response:
     return response
 
 
-def get_data() -> None:
+def get_data():
     """
-    获取数据
+    get the data(hot search and title)
     :return: None
     """
 
@@ -56,9 +57,9 @@ def get_data() -> None:
     return None
 
 
-def search_wordcloud() -> None:
+def search_wordcloud():
     """
-    绘制词云图
+    plot the wordcloud
     :return: None
     """
 
@@ -69,6 +70,7 @@ def search_wordcloud() -> None:
     word_delete: list = []
     stopwords.extend(word_delete)
 
+    # use the stopwords
     with open("search.txt", "r", encoding="utf-8") as search_file:
         search_file_read = search_file.read()
 
@@ -92,11 +94,11 @@ def search_wordcloud() -> None:
 def main():
 
     try:
-        # 获取数据并写入txt文件中
+        # get the data and write to a txt file
         get_data()
 
-        # 词云图
-        # search_wordcloud()
+        # wordcloud
+        search_wordcloud()
 
     except Exception as e:
         print(f"An error occurred: {e}")

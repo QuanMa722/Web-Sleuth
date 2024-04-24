@@ -9,6 +9,7 @@ import re
 
 
 def get_resp(page) -> requests.Response:
+
     url = r"https://www.tobse.cn/specialized/enterprise/"
 
     ua = UserAgent()
@@ -33,6 +34,7 @@ def get_resp(page) -> requests.Response:
 
 
 def get_index(page_input: int) -> None:
+
     pages: list = list(range(1, page_input + 1))
 
     index = 0
@@ -58,6 +60,7 @@ def get_index(page_input: int) -> None:
 
 
 def get_data(text_json) -> None:
+
     find_text = re.findall(r'<td>(.*?)</td>', text_json)
     elements = find_text[1:]
     filtered_elements = [el for el in elements if not re.match(r'<.*?>', el)]
@@ -75,6 +78,7 @@ def get_data(text_json) -> None:
 
 
 def main():
+
     try:
         get_index(10)
 
