@@ -10,6 +10,7 @@ import re
 async def get_urls(session, url):
     async with session.get(url) as response:
         if response.status == 200:
+
             html_text = await response.text()
             re_find = '<a class="" href="(.*?)" target="_blank"'
             url_list = re.findall(re_find, html_text)
@@ -25,28 +26,29 @@ async def get_data(session, url):
 
             await asyncio.sleep(1)  # quite significant
 
-            html_content = await response.text()
-            resp_text = etree.HTML(html_content)
+            html_text = await response.text()
+            resp_etree = etree.HTML(html_text)
 
             # find information
-            price = resp_text.xpath("//div[@class='overview']//div/span/text()")[2]
-            unit_price = resp_text.xpath("//div[@class='overview']//div/span/text()")[3]
 
-            place = (resp_text.xpath("//div[@class='overview']//div/span/a/text()")[0] + " " +
-                     resp_text.xpath("//div[@class='overview']//div/span/a/text()")[1] +
-                     resp_text.xpath("//div[@class='overview']//div/span/text()")[8]).replace('\xa0', ' ')
+            name = resp_etree.xpath("//div[@class='overview']//div[@class='communityName']/a/text()")[0]
 
-            name = resp_text.xpath("//div[@class='overview']//div[@class='communityName']/a/text()")[0]
+            place = (resp_etree.xpath("//div[@class='overview']//div/span/a/text()")[0] + " " +
+                     resp_etree.xpath("//div[@class='overview']//div/span/a/text()")[1] +
+                     resp_etree.xpath("//div[@class='overview']//div/span/text()")[8]).replace('\xa0', ' ')
+
+            price = resp_etree.xpath("//div[@class='overview']//div/span/text()")[2]
+            unit_price = resp_etree.xpath("//div[@class='overview']//div/span/text()")[3]
 
             house_url = url
 
-            base_key = resp_text.xpath("//div[@class='base']//span/text()")[0:12]
-            base_value = resp_text.xpath("//div[@class='base']//li/text()")
+            base_key = resp_etree.xpath("//div[@class='base']//span/text()")[0:12]
+            base_value = resp_etree.xpath("//div[@class='base']//li/text()")
             text_list = [value.strip() for value in base_value if value.strip()]
             base_dict = {k: v for k, v in zip(base_key, text_list)}
 
-            transaction_key = resp_text.xpath("//div[@class='transaction']//span[1]/text()")
-            transaction_value = resp_text.xpath("//div[@class='transaction']//span[2]/text()")
+            transaction_key = resp_etree.xpath("//div[@class='transaction']//span[1]/text()")
+            transaction_value = resp_etree.xpath("//div[@class='transaction']//span[2]/text()")
             transaction_dict = {k: v.strip() for k, v in zip(transaction_key, transaction_value)}
 
             house_dict = {
@@ -59,9 +61,6 @@ async def get_data(session, url):
 
             house_dict.update(base_dict)
             house_dict.update(transaction_dict)
-
-            with open(file="data.txt", mode="a", encoding="utf-8") as f:
-                f.writelines(str(house_dict) + "\n")
 
             print(house_dict)
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# https://www.zhonghuadiancang.com/lishizhuanji/mingshi
 
 from bs4 import BeautifulSoup
 from urllib import request

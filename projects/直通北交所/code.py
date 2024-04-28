@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# https://www.tobse.cn/specialized/enterprise
 
 from fake_useragent import UserAgent
 import requests

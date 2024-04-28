@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# https://weibo.com/ajax/side/hotSearch
 
 from fake_useragent import UserAgent
 import wordcloud
