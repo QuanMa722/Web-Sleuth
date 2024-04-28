@@ -1,200 +1,94 @@
-
 # -*- coding: utf-8 -*-
-# 采集链家二手房数据
-# 细分价格区间 + 多线程 + 代理池
 
-# 导入需要的第三方库
-from fake_useragent import UserAgent  # 用于获取随机User-Agent
-from lxml import etree  # 用于解析HTML
-import threading  # 用于多线程处理
-import requests  # 用于发送HTTP请求
-import random  # 用于生成随机数
-import time  # 用于时间相关操作
-import re  # 用于正则表达式匹配
+from lxml import etree
+import aiohttp
+import asyncio
+import time
+import re
 
 
-def get_anti() -> tuple:
+async def get_urls(session, url):
+    async with session.get(url) as response:
+        if response.status == 200:
+            html_text = await response.text()
+            re_find = '<a class="" href="(.*?)" target="_blank"'
+            url_list = re.findall(re_find, html_text)
 
-    ua = UserAgent()
-    headers = {
-        'User-Agent': ua.random  # 随机ua
-    }
-
-    # 根据需求选择代理池
-    api_list = [
-        "124.172.117.189:19812",
-        "219.133.31.120:26947",
-        "183.237.194.145:28436",
-        "183.62.172.50:23485",
-        "163.125.157.243:17503",
-        "183.57.42.79:26483",
-        "202.103.150.70:17251",
-        "182.254.129.124:15395",
-        "58.251.132.181:20659",
-        "112.95.241.76:21948",
-    ]
-
-    proxies = {
-        "http": f"http: //{random.choice(api_list)}"  # 随机代理
-    }
-
-    return headers, proxies
+            async with aiohttp.ClientSession() as session:
+                tasks = [get_data(session, url) for url in url_list]
+                await asyncio.gather(*tasks)
 
 
-# 获取每页的URL，并使用多线程进行数据采集
-def get_url(area_list: list, page_list: list, num_threads: int) -> None:
+async def get_data(session, url):
+    async with session.get(url) as response:
+        if response.status == 200:
 
-    threads1 = []  # 构建线程池1
-    # 根据报错信息修改代码
-    try:
-        for single_list in page_list:  # 遍历列表
-            for page in range(1, single_list[2] + 1):  # 遍历页数
-                headers, proxies = get_anti()  # 防止限制
-                # 目标函数为process_page
-                thread = threading.Thread(target=process_page,
-                                          args=(area_list, single_list, headers, proxies, page, num_threads))
-                thread.start()
-                threads1.append(thread)
+            await asyncio.sleep(1)  # quite significant
 
-                # 控制线程数，避免浪费资源
-                if len(threads1) >= num_threads:
-                    for t in threads1:
-                        t.join()
-                    threads1 = []
+            html_content = await response.text()
+            resp_text = etree.HTML(html_content)
 
-        for thread in threads1:
-            thread.join()
+            # find information
+            price = resp_text.xpath("//div[@class='overview']//div/span/text()")[2]
+            unit_price = resp_text.xpath("//div[@class='overview']//div/span/text()")[3]
 
-    except Exception as e:
-        print(f"An error occurred: {e}")  # 打印报错信息
+            place = (resp_text.xpath("//div[@class='overview']//div/span/a/text()")[0] + " " +
+                     resp_text.xpath("//div[@class='overview']//div/span/a/text()")[1] +
+                     resp_text.xpath("//div[@class='overview']//div/span/text()")[8]).replace('\xa0', ' ')
 
-    return None
+            name = resp_text.xpath("//div[@class='overview']//div[@class='communityName']/a/text()")[0]
 
+            house_url = url
 
-def process_page(area_list: list, single_list: list, headers: dict, proxies: tuple, page: int, num_threads: int) -> None:
+            base_key = resp_text.xpath("//div[@class='base']//span/text()")[0:12]
+            base_value = resp_text.xpath("//div[@class='base']//li/text()")
+            text_list = [value.strip() for value in base_value if value.strip()]
+            base_dict = {k: v for k, v in zip(base_key, text_list)}
 
-    # 初始url
-    url = f"https://{area_list[0]}.lianjia.com/ershoufang/{area_list[1]}/pg{page}bp{single_list[0]}ep{single_list[1]}"
-    # 发送请求
-    response = requests.get(url=url, headers=headers, proxies=proxies)
-    # print(f"响应：{response.status_code}  价格区间：{single_list[0]}-{single_list[1]}  页数：{page}/{single_list[2]}")
+            transaction_key = resp_text.xpath("//div[@class='transaction']//span[1]/text()")
+            transaction_value = resp_text.xpath("//div[@class='transaction']//span[2]/text()")
+            transaction_dict = {k: v.strip() for k, v in zip(transaction_key, transaction_value)}
 
-    # 利用正则表达式获取每一页的url
-    re_find = '<a class="" href="(.*?)" target="_blank"'
-    url_list = re.findall(re_find, response.text)
+            house_dict = {
+                "名称": name,
+                "地区": place,
+                "总价": price,
+                "单价": unit_price,
+                "网址": house_url,
+            }
 
-    # 构建第二个线程
-    threads2 = []
-    try:
-        thread = threading.Thread(target=get_data, args=(url_list,))  # 目标函数为get_data
-        thread.start()
-        threads2.append(thread)
-        if len(threads2) <= num_threads:
-            for t in threads2:
-                t.join()
-            threads2 = []
-        for thread in threads2:
-            thread.join()
+            house_dict.update(base_dict)
+            house_dict.update(transaction_dict)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")  # 打印报错信息
-    return None
+            with open(file="data.txt", mode="a", encoding="utf-8") as f:
+                f.writelines(str(house_dict) + "\n")
+
+            print(house_dict)
 
 
-# 获取数据
-def get_data(url_list: list) -> None:
+async def main():
+    # eg: price: [1, 100], page: [1, 25] total, total: 750 pcs
 
-    # 遍历每页的url
-    for every_single_url in url_list:
-        # 防止限制
-        headers, proxies = get_anti()
-        # 发送请求
-        response = requests.get(url=every_single_url, headers=headers, proxies=proxies)
-        # xpath解析获取数据
-        resp_text = etree.HTML(response.text)
+    for num in [1, 6, 11, 16, 21]:  # test
 
-        # 根据需求获取数据
-        # 总价
-        total_price = resp_text.xpath("//div[@class='overview']//div/span/text()")[2]
-        # 单价
-        single_price = resp_text.xpath("//div[@class='overview']//div/span/text()")[3]
-        # 地点
-        # place = resp_text.xpath("//div[@class='overview']//div/span/a/text()")[0] + " " + \
-        #         resp_text.xpath("//div[@class='overview']//div/span/a/text()")[1] + " " + \
-        #         resp_text.xpath("//div[@class='overview']//div[@class='areaName']/span/text()")[2][-4:]
-        place = resp_text.xpath("//div[@class='overview']//div/span/a/text()")[1]
-        # 房子名称
-        name = resp_text.xpath("//div[@class='overview']//div[@class='communityName']/a/text()")[0]
+        start_record = time.time()
 
-        start_dict = {
-            "总价": total_price,
-            "单价": single_price,
-            "地区": place,
-            "名称": name,
+        url_list = [f"https://wh.lianjia.com/ershoufang/pg{page}bp1ep100" for page in range(num, num + 5)]
 
-        }
+        # For stability considerations, it can be increased as the task increases.
+        time.sleep(3)
 
-        # 房子属性
-        base_key1 = resp_text.xpath("//div[@class='base']//span/text()")[0:12]
-        base_value1 = resp_text.xpath("//div[@class='base']//li/text()")
-        text_list = [text.strip() for text in base_value1 if text.strip()]
-        middle_dict1 = {k: v for k, v in zip(base_key1, text_list)}
+        async with aiohttp.ClientSession() as session:
+            tasks = [get_urls(session, url) for url in url_list]
+            await asyncio.gather(*tasks)
 
-        # 交易属性
-        base_key2 = resp_text.xpath("//div[@class='transaction']//span[1]/text()")
-        base_value2 = resp_text.xpath("//div[@class='transaction']//span[2]/text()")
-        middle_dict2 = {k: v for k, v in zip(base_key2, base_value2)}
+        end_record = time.time()
 
-        # 定义一个空字典，用来整合信息。
-        last_dict = {
-
-        }
-
-        # 更新字典
-        last_dict.update(start_dict)
-        last_dict.update(middle_dict1)
-        last_dict.update(middle_dict2)
-
-        # 可选择打印，检验是否报错。
-        print(last_dict)
-
-        # 根据需求选择存放数据的方法
-        with open("data.txt", "a") as f:
-            f.writelines(str(last_dict))
-
-    return None
-
-
-def main():
-
-    try:
-
-        start_time = time.time()
-
-        area_list = ["wh", "jianghxia"]
-
-        # 价格区间和页数
-        page_list = [
-            [1, 100, 80]
-        ]
-
-        # 线程数限制
-        num_threads = 50
-
-        get_url(area_list, page_list, num_threads)
-        end_time = time.time()
-        execution_time = end_time - start_time
-        print(f"程序运行时间为：{execution_time}秒")
-
-        # 计算采集速度
-        page_num = sum([num[2] for num in page_list])
-        print("采集速度约为：" + str(round((((page_num * 30) / execution_time) * 60))) + "条/分钟")
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        print("-" * 20)
+        speed = round(((len(url_list) * 30) / (end_record - start_record - 3)) * 60)
+        print(f"speed: {speed} pcs/min")
+        print("-" * 20)
 
 
 if __name__ == '__main__':
-
-    main()
-
+    asyncio.run(main())

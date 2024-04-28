@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from urllib import request
 
 
-def get_data():
+def get_data() -> str:
 
     url = "https://www.zhonghuadiancang.com/lishizhuanji/mingshi/4380.html"
     response = request.urlopen(url)

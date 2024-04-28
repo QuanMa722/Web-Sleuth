@@ -33,7 +33,7 @@ def get_resp(page) -> requests.Response:
     return response
 
 
-def get_index(page_input: int) -> None:
+def get_index(page_input: int):
 
     pages: list = list(range(1, page_input + 1))
 
@@ -47,11 +47,11 @@ def get_index(page_input: int) -> None:
         text_json = json.loads(response.text)["pageView"]
 
         if text_json[6] != "t":
-            print(f"第{page}页加入队列后。")
+            print(f"Page{page} after have been queued.")
             pages.append(page)
 
         else:
-            print(f"第{page}页成功获取。")
+            print(f"Page{page} is successfully obtained.")
             get_data(text_json)
 
         index += 1
@@ -59,7 +59,7 @@ def get_index(page_input: int) -> None:
     return None
 
 
-def get_data(text_json) -> None:
+def get_data(text_json):
 
     find_text = re.findall(r'<td>(.*?)</td>', text_json)
     elements = find_text[1:]
@@ -76,11 +76,13 @@ def get_data(text_json) -> None:
             print(infor)
             count += 6
 
+    return None
+
 
 def main():
 
     try:
-        get_index(10)
+        get_index(10)  # page
 
     except Exception as e:
         print(f"An error occurred: {e}")
