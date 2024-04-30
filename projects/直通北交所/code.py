@@ -66,14 +66,11 @@ def get_data(text_json):
 
     num = int(len(filtered_elements) / 6)
     count = 0
+    for _ in range(num):
+        infor = filtered_elements[count:count + 6]
 
-    with open(file="company.txt", mode="a", encoding="utf-8") as f:
-        for _ in range(num):
-            infor = filtered_elements[count:count + 6]
-            f.write(str(infor) + "\n")
-
-            print(infor)
-            count += 6
+        print(infor)
+        count += 6
 
     return None
 

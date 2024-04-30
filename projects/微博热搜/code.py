@@ -97,7 +97,7 @@ def main():
         get_data()
 
         # wordcloud
-        search_wordcloud()
+        # search_wordcloud()
 
     except Exception as e:
         print(f"An error occurred: {e}")
