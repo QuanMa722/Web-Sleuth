@@ -6,7 +6,7 @@ import asyncio
 import json
 
 
-async def get_urls(session, index):
+async def fetch(session, index):
     url = f"https://www.douyin.com/aweme/v1/web/comment/list?"
     cookie = ()
     aweme_id = ()
@@ -47,7 +47,7 @@ async def main():
     index_list: list = [20, 40, 60]
 
     async with aiohttp.ClientSession() as session:
-        tasks = [get_urls(session, index) for index in index_list]
+        tasks = [fetch(session, index) for index in index_list]
         await asyncio.gather(*tasks)
 
 

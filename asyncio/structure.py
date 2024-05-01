@@ -7,8 +7,9 @@ import asyncio
 async def fetch(session, url):
     async with session.get(url) as response:
         if response.status == 200:
+            html_text = await response.text()
             # locate information
-            print(response.text)
+            print(html_text)
 
 
 async def main():
