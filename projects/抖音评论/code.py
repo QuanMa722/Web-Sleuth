@@ -30,6 +30,7 @@ async def fetch(session, index):
             html_text = await response.text()
             json_data = json.loads(html_text)
 
+            # modification on demand
             for comment in json_data["comments"]:
                 data_dict = {
                     "用户id": comment["user"]["uid"].strip(),
@@ -44,6 +45,9 @@ async def fetch(session, index):
 
 
 async def main():
+
+    # your task list
+    # pay attention to the rest time
     index_list: list = [20, 40, 60]
 
     async with aiohttp.ClientSession() as session:

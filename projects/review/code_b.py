@@ -1,25 +1,11 @@
-import time
-
 # -*- coding: utf-8 -*-
-# https://www.biqg.cc
 
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+import time
 
-edge_none = {
-    "browserName": "MicrosoftEdge",
-    "version": "121.0.2277.112",
-    "platform": "WINDOWS",
-    "ms:edgeOptions": {
-        'extensions': [],
-        'args': [
-            '--headless',
-            '--disable-gpu'
-        ]}
-}
 
-edge_driver_path = r"D:\APP\edgedriver_win64\msedgedriver.exe"
-driver = webdriver.Edge(executable_path=edge_driver_path, capabilities=edge_none)
+driver = webdriver.Edge()
 
 
 def get_infor():

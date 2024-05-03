@@ -36,7 +36,8 @@ async def fetch(session, page):
 async def main():
     async with aiohttp.ClientSession() as session:
 
-        page_list: list = list(range(1, 10))
+        # your task list
+        page_list: list = list(range(1, 11))
 
         tasks = [fetch(session, page) for page in page_list]
         await asyncio.gather(*tasks)

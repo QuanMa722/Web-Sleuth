@@ -1,83 +1,76 @@
-
 # -*- coding: utf-8 -*-
-# 豆瓣滑动验证码
 
-# 导入需要的库
-from selenium.webdriver.support import expected_conditions as ec  # 用于设置等待条件
-from selenium.webdriver.common.action_chains import ActionChains  # 用于模拟鼠标操作
-from selenium.webdriver.support.wait import WebDriverWait  # 用于设置显式等待
-from selenium.webdriver.common.by import By  # 用于定位元素
-from selenium import webdriver  # 用于控制浏览器
-from urllib import request  # 用于下载验证码图片
-import random  # 用于生成随机数
-import time  # 用于添加延时
-import cv2  # 用于图像处理
-import re  # 用于正则表达式匹配
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.wait import WebDriverWait  #
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+from urllib import request
+import random
+import time
+import cv2
+import re
 
-
-# 设置Edge WebDriver的路径
-edge_driver_path = r"D:\APP\edgedriver_win64\msedgedriver.exe"
-# 创建Edge浏览器的WebDriver实例
-driver = webdriver.Edge(executable_path=edge_driver_path)
+driver = webdriver.Edge()
 
 
-def get_path():
-    """
-    获取验证码图片，并保存到本地
-    """
+def get_image() -> str:
+
     url = "https://accounts.douban.com"
 
-    # 访问网页
     driver.get(url)
-    # 点击密码登录按钮
+
+    time.sleep(1)
+
+    # click on "Password Login"
     button_switch_password = driver.find_element(By.XPATH, "//*[@id='account']/div[2]/div[2]/div/div[1]/ul[1]/li[2]")
     button_switch_password.click()
 
-    # 输入邮箱
-    button_mail = driver.find_element(By.XPATH, "//*[@id='username']")
-    button_mail.send_keys("88888888@qq.com")
+    time.sleep(1)
 
-    # 输入密码
-    button_password = driver.find_element(By.XPATH, "//*[@id='password']")
-    button_password.send_keys("88888888")
+    # enter email and password (random)
+    button_mail_input = driver.find_element(By.XPATH, "//*[@id='username']")
+    button_mail_input.send_keys("your phone number or email")
 
-    # 点击登录
+    time.sleep(1)
+
+    button_password_input = driver.find_element(By.XPATH, "//*[@id='password']")
+    button_password_input.send_keys("your password")
+
+    time.sleep(1)
+
+    # click to login
     button_click = driver.find_element(By.XPATH, "//*[@id='account']/div[2]/div[2]/div/div[2]/div[1]/div[4]/a")
     button_click.click()
     driver.implicitly_wait(5000)
 
-    # 找到滑动验证码图片
-    driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="tcaptcha_iframe_dy"]'))
+    time.sleep(1)
 
-    # 设置等待，直到找到条件为止
+    # getting the image and positioning it
+    driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="tcaptcha_iframe_dy"]'))
     WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.ID, "slideBg")))
 
-    # 定位图片
     image_src = driver.find_element(By.ID, 'slideBg')
-
     image_src_new = image_src.get_attribute('style')
 
     find_src_re = r'background-image: url\(\"(.*?)\"\);'
-
     image_src_last = re.findall(find_src_re, image_src_new, re.S)[0]
 
     if image_src_last.find("https") == -1:
         image_src_last = "https://t.captcha.qq.com" + image_src_last
 
     image_path = "origin.png"
-    # 保存图片
+
     request.urlretrieve(image_src_last, image_path)
 
     return image_path
 
 
-def get_distance(image_path):
-    """
-    处理验证码图片，获取需要滑动的距离
-    """
-    image_process = cv2.imread(image_path)
+def get_distance(image):
 
-    # 算法
+    image_process = cv2.imread(image)
+
+    # algorithms
     blurred = cv2.GaussianBlur(image_process, (5, 5), 0)
     canny = cv2.Canny(blurred, 50, 150)
     contours, _ = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -89,19 +82,17 @@ def get_distance(image_path):
 
         if 5025 < area < 7215 and 300 < perimeter < 380:
             cv2.rectangle(image_process, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            cv2.imwrite("output.jpg", image_process)  # 保存标记后的图像
+            cv2.imwrite("output.jpg", image_process)
             return x
 
 
 def get_move(distance):
-    """
-    执行滑动验证码操作
-    """
+
     distance_process = int(int(distance) * 340 / 672)
     button_move = driver.find_element(By.XPATH, '//*[@id="tcOperation"]/div[6]')
     x_coordinate = button_move.location['x']
 
-    print(f"初始距离为:{x_coordinate}")
+    print(f"the initial distance: {x_coordinate}")
 
     distance_gap = distance_process - x_coordinate
     driver.implicitly_wait(2000)
@@ -114,24 +105,29 @@ def get_move(distance):
         time.sleep(1)
         ActionChains(driver).move_by_offset(xoffset=move_x, yoffset=0).perform()
 
-        print(f"第{count_num}次移动，移动距离为{move_x}，位置为{button_move.location['x']}/{distance_process}")
+        print(f"the {count_num}th move, with a distance of {move_x} and a position of {button_move.location['x']}/{distance_process}")
         count_num += 1
 
     ActionChains(driver).release().perform()
 
+    button_click = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[1]/div[5]/a")
+    button_click.click()
+
     time.sleep(5)
-    # 关闭浏览器
     driver.quit()
 
 
-def main():
-    """
-    主函数
-    """
-    image_path = get_path()
-    distance = get_distance(image_path)
+if __name__ == '__main__':
+
+    image = get_image()
+    distance = get_distance(image)
     get_move(distance)
 
 
-if __name__ == '__main__':
-    main()
+
+
+
+
+
+
+

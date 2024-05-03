@@ -1,33 +1,14 @@
-
 # -*- coding: utf-8 -*-
-# 采集天气网历史天气数据
-# selenium
-
-from selenium.webdriver.common.by import By  # 用于定位元素
-from selenium import webdriver  # 实例化webdriver
-import datetime  # 获取当前时间
-import random  # 设置随机数
-import time  # 休息几秒
 
 
-# 设置 Edge 驱动参数，不显示页面
-edge_none = {
-    "browserName": "MicrosoftEdge",
-    "version": "121.0.2277.112",
-    "platform": "WINDOWS",
-    "ms:edgeOptions": {
-        'extensions': [],
-        'args': [
-            '--headless',
-            '--disable-gpu'
-        ]}
-}
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+import datetime
+import random
+import time
 
-# Edge 驱动路径
-edge_driver_path = r"D:\APP\edgedriver_win64\msedgedriver.exe"
 
-# 初始化 WebDriver 对象
-driver = webdriver.Edge(executable_path=edge_driver_path, capabilities=edge_none)
+driver = webdriver.Edge()
 
 
 def get_date():

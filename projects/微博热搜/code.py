@@ -31,27 +31,23 @@ def get_resp() -> requests.Response:
 
 def get_data():
     """
-    get the data(hot search and title)
+    get the data(top search and hot search)
     :return: None
     """
 
     response = get_resp()
 
-    try:
-        with open(file="search.txt", mode="a", encoding="utf-8") as f:
+    with open(file="search.txt", mode="a", encoding="utf-8") as f:
 
-            search_json = json.loads(response.text)
-            search_top: str = search_json["data"]["hotgovs"][0]["note"]
-            f.write(search_top + "\n")
-            print(f"The top hot search :{search_top}")
+        search_json = json.loads(response.text)
+        search_top: str = search_json["data"]["hotgovs"][0]["note"]
+        f.write(search_top + "\n")
+        print(f"top search: {search_top}")
 
-            for num in range(0, 50):
-                search: str = search_json["data"]["realtime"][num]["note"]
-                f.write(search + "\n")
-                print(f"The hot search :{search}")
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        for num in range(0, 50):
+            search: str = search_json["data"]["realtime"][num]["note"]
+            f.write(search + "\n")
+            print(f"hot search: {search}")
 
     return None
 
@@ -62,14 +58,15 @@ def search_wordcloud():
     :return: None
     """
 
+    # use the stopwords
     with open("stopwords.txt", mode="r", encoding="utf-8") as stop_file:
         stopwords: list = stop_file.readlines()
     stopwords = [word.strip() for word in stopwords]
 
+    # words you need to delete
     word_delete: list = []
     stopwords.extend(word_delete)
 
-    # use the stopwords
     with open("search.txt", "r", encoding="utf-8") as search_file:
         search_file_read = search_file.read()
 
@@ -85,7 +82,7 @@ def search_wordcloud():
                            )
     word_cloud.generate(txt)
 
-    word_cloud.to_file("search_wordcloud.png")
+    word_cloud.to_file("search.png")
 
     return None
 
@@ -97,10 +94,11 @@ def main():
         get_data()
 
         # wordcloud
-        # search_wordcloud()
+        search_wordcloud()
 
     except Exception as e:
         print(f"An error occurred: {e}")
+        print("Please try again.")
 
 
 if __name__ == '__main__':
