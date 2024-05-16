@@ -42,8 +42,8 @@ async def get_data(session, url):
 
             house_url = url
 
-            base_key = resp_etree.xpath("//div[@class='base']//span/text()")[0:12]
-            base_value = resp_etree.xpath("//div[@class='base']//li/text()")
+            base_key = resp_etree.xpath("//div[@class='基础']//span/text()")[0:12]
+            base_value = resp_etree.xpath("//div[@class='基础']//li/text()")
             text_list = [value.strip() for value in base_value if value.strip()]
             base_dict = {k: v for k, v in zip(base_key, text_list)}
 

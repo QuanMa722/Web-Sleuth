@@ -70,7 +70,7 @@ def get_distance(image):
 
     image_process = cv2.imread(image)
 
-    # algorithms
+    # 算法
     blurred = cv2.GaussianBlur(image_process, (5, 5), 0)
     canny = cv2.Canny(blurred, 50, 150)
     contours, _ = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)

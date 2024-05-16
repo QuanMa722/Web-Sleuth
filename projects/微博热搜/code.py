@@ -90,7 +90,7 @@ def search_wordcloud():
 def main():
 
     try:
-        # get the data and write to a txt file
+        # get the data and write to a txt 文件读写
         get_data()
 
         # wordcloud
