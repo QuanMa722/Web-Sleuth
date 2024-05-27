@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import time
 
-
-driver = webdriver.Edge()
+opt = Options()
+opt.add_argument('--headless')
+driver = webdriver.Edge(options=opt)
 
 
 def get_data():
-
     url = "http://www.hxlib.cn/book/a519487a2ececa4eedee995d126c745b.html"
     driver.get(url)
 

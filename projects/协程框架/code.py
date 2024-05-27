@@ -15,16 +15,11 @@ async def fetch(session, url):
 async def main():
     async with aiohttp.ClientSession() as session:
         # your task list
-        url_list: list = ["https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
-                          "https://www.baidu.com",
+        url_list: list = [
+            "https://www.baidu.com",
+            "https://www.baidu.com",
+            "https://www.baidu.com",
+            "https://www.baidu.com",
                           ]
 
         tasks = [fetch(session, url) for url in url_list]

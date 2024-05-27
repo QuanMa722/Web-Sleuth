@@ -3,8 +3,11 @@
 from fake_useragent import UserAgent
 import wordcloud
 import requests
+import logging
 import jieba
 import json
+
+jieba.setLogLevel(logging.INFO)
 
 
 def get_resp() -> requests.Response:
@@ -94,7 +97,7 @@ def main():
         get_data()
 
         # wordcloud
-        search_wordcloud()
+        # search_wordcloud()
 
     except Exception as e:
         print(f"An error occurred: {e}")

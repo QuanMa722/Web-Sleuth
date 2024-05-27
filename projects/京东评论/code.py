@@ -6,7 +6,6 @@ import asyncio
 
 
 async def fetch(session, page):
-
     url = 'https://club.jd.com/comment/productPageComments.action'
 
     param = {
@@ -37,7 +36,7 @@ async def main():
     async with aiohttp.ClientSession() as session:
 
         # your task list
-        page_list: list = list(range(1, 11))
+        page_list: list = list(range(1, 30))
 
         tasks = [fetch(session, page) for page in page_list]
         await asyncio.gather(*tasks)

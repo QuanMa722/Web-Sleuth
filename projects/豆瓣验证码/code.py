@@ -30,12 +30,12 @@ def get_image() -> str:
 
     # enter email and password (random)
     button_mail_input = driver.find_element(By.XPATH, "//*[@id='username']")
-    button_mail_input.send_keys("your phone number or email")
+    button_mail_input.send_keys("88888888@qq.com")
 
     time.sleep(1)
 
     button_password_input = driver.find_element(By.XPATH, "//*[@id='password']")
-    button_password_input.send_keys("your password")
+    button_password_input.send_keys("88888888")
 
     time.sleep(1)
 
