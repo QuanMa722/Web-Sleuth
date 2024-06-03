@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from fake_useragent import UserAgent
 from lxml import etree
 import aiohttp
 import asyncio
 import time
 import re
 
+ua = UserAgent()
+headers = {
+    'User-Agent': ua.random
+}
+
 
 async def get_urls(session, url):
-    async with session.get(url) as response:
+    async with session.get(url=url, headers=headers) as response:
         if response.status == 200:
 
             html_text = await response.text()
@@ -21,7 +27,7 @@ async def get_urls(session, url):
 
 
 async def get_data(session, url):
-    async with session.get(url) as response:
+    async with session.get(url=url, headers=headers) as response:
         if response.status == 200:
 
             await asyncio.sleep(1)  # quite significant
