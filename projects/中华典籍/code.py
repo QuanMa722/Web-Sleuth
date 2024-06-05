@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
-from urllib import request
+import requests
 
 
 def get_data() -> str:
     url = "https://www.zhonghuadiancang.com/lishizhuanji/mingshi/4380.html"
 
-    response = request.urlopen(url)
+    response = requests.get(url)
 
-    html = response.read().decode("utf-8")
+    html = response.content.decode("utf-8")
     soup = BeautifulSoup(html, 'html.parser')
 
     title: str = soup.find('h1').get_text().strip()
