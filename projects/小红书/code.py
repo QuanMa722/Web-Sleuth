@@ -9,19 +9,20 @@ js_code = open('xhs.js', encoding='utf-8').read()
 ctx = execjs.compile(js_code)
 
 
-def get_data(pid, cursor):
+def get_data(cookie_input, pid, cursor):
     global ctx
 
     url = f"https://edith.xiaohongshu.com/api/sns/web/v2/comment/page?note_id={pid}&cursor={cursor}"
 
     x_t = int((time.time() + 8) * 1000)
-    x_s = ctx.call('get_x', str(x_t) + 'test/api/sns/web/v2/comment/page?note_id=' + str(pid) + '&cursor=' + str(cursor))
+    x_s = ctx.call('get_x',
+                   str(x_t) + 'test/api/sns/web/v2/comment/page?note_id=' + str(pid) + '&cursor=' + str(cursor))
 
     headers = {
         "referer": "https://www.xiaohongshu.com/",
         "user-agent": "Mozilla/5.0(Windows NT 10.0; Win64; x64)AppleWebKit/537.36(KHTML, like Gecko)Chrome/108.0.0.0 "
                       "Safari/537.36",
-        "cookie": "Please replace your cookies!",
+        "cookie": cookie_input,
         "accept": "application/json",
         "content-type": "application/json;charset=utf-8",
         "x-s": x_s,
@@ -47,13 +48,14 @@ def get_data(pid, cursor):
 
             print(comment_dict)
 
-        get_data(pid, cur)
+        get_data(cookie_input, pid, cur)
 
     except Exception as error:
-        print(f"An error occurred: {error}, maybe you don't fill your cookies?")
-        print("Comments are captured.")
+        print(f"An error occurred: {error}.")
+        print(f"Data collection complete.")
 
 
 if __name__ == '__main__':
-    note_pid: str = "64fed58f0000000013035d74"
-    get_data(note_pid, '')
+    note_pid: str = input("note_pid:")
+    cookie: str = input("cookie:")
+    get_data(cookie, note_pid, '')
