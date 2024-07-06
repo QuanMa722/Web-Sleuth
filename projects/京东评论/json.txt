@@ -1,0 +1,101 @@
+
+{
+  'id': 20926392148,
+  'guid': '6ccfb69b93dc352caf0ccc340b1146d8',
+  'content': '外形外观：外观时尚，手感细腻握感很好。\n屏幕音效：屏幕显示效果非常好，色彩鲜艳，音质也挺好。\n拍照效果：拍照功能一般般吧，一般情况下也不拍照无所谓。\n运行速度：处理器不错，玩游戏暂未发现卡顿。\n待机时间：一天都玩无压力。\n其他特色：充电速度快，系统操作简单，性价比超高！',
+  'vcontent': '{$%&外形外观：&%$}外观时尚，手感细腻握感很好。\n{$%&屏幕音效：&%$}屏幕显示效果非常好，色彩鲜艳，音质也挺好。\n{$%&拍照效果：&%$}拍照功能一般般吧，一般情况下也不拍照无所谓。\n{$%&运行速度：&%$}处理器不错，玩游戏暂未发现卡顿。\n{$%&待机时间：&%$}一天都玩无压力。\n{$%&其他特色：&%$}充电速度快，系统操作简单，性价比超高！',
+  'creationTime': '2024-06-12 15:11:12',
+  'isDelete': False,
+  'isTop': False,
+  'userImageUrl': 'storage.360buyimg.com/i.imageUpload/6a645f3534666361373364353663393031343938303331323937343838_sma.jpg',
+  'topped': 0,
+  'replies': [
+    {
+      'id': 1382403639,
+      'commentId': 20926392148,
+      'venderId': 0,
+      'type': 1,
+      'content': '尊敬的顾客您好，非常感谢您的选购。Galaxy S24+手机的AI可以成为您的"小助理"，准备好拥有您自己的私人助理了吗?通过录制您的话语，AI可以将其转换为文本，然后智能地进行总结和精炼。',
+      'pin': '三星京东自营官方旗舰店',
+      'userClient': 103,
+      'userImage': 'storage.360buyimg.com/i.imageUpload/c8fdd0c7d6d0b9fa31363633323236303338373836_sma.jpg',
+      'ip': '58.33.121.82',
+      'productId': 100082427701,
+      'replyList': [],
+      'nickname': '三星京东自营官方旗舰店',
+      'creationTime': '2024-06-12 16:34:59',
+      'parentId': 0,
+      'targetId': 0,
+      'venderShopInfo': {
+        'id': 1000003443,
+        'appName': '//samsung.jd.com',
+        'title': '三星京东自营官方旗舰店',
+        'venderId': 1000003443
+      }
+    }
+  ],
+  'replyCount': 1,
+  'score': 5,
+  'imageStatus': 1,
+  'usefulVoteCount': 9,
+  'userClient': 2,
+  'discussionId': 1538970621,
+  'imageCount': 4,
+  'anonymousFlag': 1,
+  'plusAvailable': 201,
+  'mobileVersion': '13.1.0',
+  'images': [
+    {
+      'id': -1675226968,
+      'imgUrl': '//img30.360buyimg.com/n0/s128x96_jfs/t1/165113/38/45259/210511/66694a0fF0c63a76a/b36b4ec9e9e01955.jpg',
+      'imgTitle': '',
+      'status': 0
+    },
+    {
+      'id': -1675226967,
+      'imgUrl': '//img30.360buyimg.com/n0/s128x96_jfs/t1/165858/8/45184/141089/66694a0fF64884a44/5771040b30b6d731.jpg',
+      'imgTitle': '',
+      'status': 0
+    },
+    {
+      'id': -1675226966,
+      'imgUrl': '//img30.360buyimg.com/n0/s128x96_jfs/t1/180745/21/46979/271582/66694a10F425c9f21/52c81d1389751163.jpg',
+      'imgTitle': '',
+      'status': 0
+    },
+    {
+      'id': -1675226965,
+      'imgUrl': '//img30.360buyimg.com/n0/s128x96_jfs/t1/222450/22/43011/119042/66694a0fF8e1c9fc8/170c62c9515491dc.jpg',
+      'imgTitle': '',
+      'status': 0
+    }
+  ],
+  'mergeOrderStatus': 2,
+  'productColor': '秘矿紫',
+  'productSize': '12GB+256GB',
+  'textIntegral': 40,
+  'imageIntegral': 40,
+  'ownId': 1000003443,
+  'ownType': 0,
+  'extMap': {
+    'buyCount': 1
+  },
+  'location': '广东',
+  'status': 1,
+  'referenceId': '100082427701',
+  'referenceTime': '2024-06-10 22:43:00',
+  'nickname': '赚***群',
+  'replyCount2': 1,
+  'userImage': 'storage.360buyimg.com/i.imageUpload/6a645f3534666361373364353663393031343938303331323937343838_sma.jpg',
+  'orderId': 0,
+  'integral': 80,
+  'productSales': '[{"dim":3,"saleName":"可选版本","saleValue":"官方标配版"}]',
+  'referenceImage': 'jfs/t1/224292/8/16360/57561/668525b6F81faf797/18f2b6ef2ff1d5b9.jpg',
+  'referenceName': '三星（SAMSUNG）Galaxy S24+ AI手机 智能办公修图摄像 拍照手机 同声翻译 12GB+256GB 水墨黑 5G 长续航游戏手机',
+  'firstCategory': 9987,
+  'secondCategory': 653,
+  'thirdCategory': 655,
+  'aesPin': None,
+  'days': 2,
+  'afterDays': 0
+}
