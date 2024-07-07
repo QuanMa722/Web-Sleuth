@@ -9,9 +9,9 @@ class CSVDuplicatesRemover:
         self.file_path = file_path
 
     def remove_duplicates(self):
-        df = pd.read_csv(self.file_path)
+        df = pd.read_csv(self.file_path, encoding='utf-8-sig')
         df_deduped = df.drop_duplicates()
-        df_deduped.to_csv(self.file_path, index=False)
+        df_deduped.to_csv(self.file_path, index=False, encoding='utf-8-sig')
         print(f"Deduplicated data saved to {self.file_path}")
 
 
