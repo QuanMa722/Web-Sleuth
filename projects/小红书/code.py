@@ -33,7 +33,7 @@ def get_data(cookie_input, pid, cursor):
         response = requests.get(headers=headers, url=url)
         resp_json = json.loads(response.text, strict=False)
 
-        datas = resp_json['data']
+        datas = resp_json['ming']
         cur = datas['cursor']
 
         for data in datas['comments']:

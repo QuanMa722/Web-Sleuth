@@ -35,7 +35,7 @@ async def fetch(session, index):
 
             html_text = await response.text()
 
-            resp_dict = json.loads(html_text)["data"]
+            resp_dict = json.loads(html_text)["ming"]
             item = resp_dict[0]
 
             data_dict = {
