@@ -2,6 +2,7 @@
 
 from fake_useragent import UserAgent
 from aiohttp import ClientTimeout
+import pandas as pd
 import asyncio
 import aiohttp
 import csv
@@ -98,8 +99,23 @@ class CommentFetcher:
             print("Done")
 
 
+class CSVDuplicatesRemover:
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    def remove_duplicates(self):
+        df = pd.read_csv(self.file_path, encoding='utf-8-sig')
+        df_deduped = df.drop_duplicates()
+        df_deduped.to_csv(self.file_path, index=False, encoding='utf-8-sig')
+        print(f"Deduplicated data saved to {self.file_path}")
+
+
 if __name__ == '__main__':
     file_path = 'comments.csv'
     product_id = '100066896356'
     comment_fetcher = CommentFetcher(file_path, product_id)
     asyncio.run(comment_fetcher.main())
+
+    # remover = CSVDuplicatesRemover(file_path)
+    # remover.remove_duplicates()

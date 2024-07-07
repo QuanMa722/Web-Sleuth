@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from duplicate import CSVDuplicatesRemover
+from crawl import CSVDuplicatesRemover
 from crawl import CommentFetcher
 import asyncio
 import time
