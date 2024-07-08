@@ -117,5 +117,3 @@ if __name__ == '__main__':
     comment_fetcher = CommentFetcher(file_path, product_id)
     asyncio.run(comment_fetcher.main())
 
-    # remover = CSVDuplicatesRemover(file_path)
-    # remover.remove_duplicates()

@@ -1,4 +1,3 @@
-
 function stringToBytes(str){
 	var bytes = new Array();
 	for (var i = 0; i < str.length; i++) {
@@ -645,6 +644,5 @@ function get_x(t){
     return result
 }
 "https://edith.xiaohongshu.com/api/sns/web/v2/comment/page?note_id=62580023000000000102917a&cursor="
-
 
 // console.log(d)

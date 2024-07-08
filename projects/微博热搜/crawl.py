@@ -43,12 +43,12 @@ def get_data():
     with open(file="search.txt", mode="a", encoding="utf-8") as f:
 
         search_json = json.loads(response.text)
-        search_top: str = search_json["ming"]["hotgovs"][0]["note"]
+        search_top: str = search_json["data"]["hotgovs"][0]["note"]
         f.write(search_top + "\n")
         print(f"top search: {search_top}")
 
         for num in range(0, 50):
-            search: str = search_json["ming"]["realtime"][num]["note"]
+            search: str = search_json["data"]["realtime"][num]["note"]
             f.write(search + "\n")
             print(f"hot search: {search}")
 

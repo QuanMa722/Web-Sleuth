@@ -9,14 +9,13 @@ async def fetch(session, url):
         if response.status == 200:
             html_text = await response.text()
             # locate information
-            print(html_text)
+            print('Done')
 
 
 async def main():
     async with aiohttp.ClientSession() as session:
         # your task list
         url_list: list = [
-            "https://www.baidu.com",
             "https://www.baidu.com",
             "https://www.baidu.com",
             "https://www.baidu.com",
