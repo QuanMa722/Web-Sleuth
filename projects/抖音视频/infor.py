@@ -4,9 +4,13 @@ from fake_useragent import UserAgent
 import asyncio
 import aiohttp
 import time
+import json
 import csv
 import os
 import re
+
+with open(file='config.json', mode='r') as f:
+    configs = json.load(f)
 
 
 def printt(msg):
@@ -72,7 +76,9 @@ class Task:
             desc['收藏'] = desc.pop('collect_count')
             desc['分享'] = desc.pop('share_count')
             desc['作品id'] = aweme["aweme_id"]
-            desc['分享链接'] = aweme["share_info"]['share_url']
+            # desc['分享链接'] = aweme["share_info"]['share_url']
+            desc['视频链接'] = aweme["video"]["play_addr"]["url_list"][0]
+
             del desc['play_count']
             del desc['admire_count']
 
@@ -104,8 +110,8 @@ class Task:
 
 
 async def main():
-    url = ""
-    cookie = ""
+    url = configs['url']
+    cookie = configs['cookie']
     user_id = re.findall(r'/user/([A-Za-z0-9_-]+)', url)[0]
 
     task = Task(user_id, cookie)
