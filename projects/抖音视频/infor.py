@@ -52,7 +52,7 @@ class Task:
                 xb = await xb_resp.json()
 
             url = f'https://www.douyin.com/aweme/v1/web/aweme/post/?{form}&X-Bogus={xb["data"]["X_Bogus"]}'
-            async with session.get(url, headers=headers, timeout=3) as resp:
+            async with session.get(url=url, headers=headers, timeout=3) as resp:
                 resp_data = await resp.json()
 
             self.nickname = resp_data["aweme_list"][0]["author"]["nickname"]
@@ -76,8 +76,6 @@ class Task:
             desc['收藏'] = desc.pop('collect_count')
             desc['分享'] = desc.pop('share_count')
             desc['作品id'] = aweme["aweme_id"]
-            # desc['分享链接'] = aweme["share_info"]['share_url']
-            desc['视频链接'] = aweme["video"]["play_addr"]["url_list"][0]
 
             del desc['play_count']
             del desc['admire_count']
