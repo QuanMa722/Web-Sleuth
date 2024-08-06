@@ -112,6 +112,7 @@ class CSVDuplicatesRemover:
 
 
 if __name__ == '__main__':
+    # test
     file_path = 'comments.csv'
     product_id = '100066896356'
     comment_fetcher = CommentFetcher(file_path, product_id)
