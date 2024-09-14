@@ -19,6 +19,7 @@ async def main():
         "https://www.baidu.com",
         "https://www.baidu.com",
     ]
+
     async with aiohttp.ClientSession() as session:
         tasks = [fetch(session, url) for url in url_list]
         await asyncio.gather(*tasks)

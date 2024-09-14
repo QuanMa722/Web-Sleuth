@@ -6,7 +6,6 @@ url = "https://www.baidu.com"
 
 response = requests.get(url=url)
 
-# the 基础
 # It will be garbled.
 print(response.text)
 
