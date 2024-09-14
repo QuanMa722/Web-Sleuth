@@ -13,27 +13,17 @@ async def fetch(session, url):
 
 
 async def main():
+    # your task list
+    url_list: list = [
+        "https://www.baidu.com",
+        "https://www.baidu.com",
+        "https://www.baidu.com",
+    ]
     async with aiohttp.ClientSession() as session:
-        # your task list
-        url_list: list = [
-            "https://www.baidu.com",
-            "https://www.baidu.com",
-            "https://www.baidu.com",
-                          ]
-
         tasks = [fetch(session, url) for url in url_list]
         await asyncio.gather(*tasks)
+        await asyncio.sleep(1)
+
 
 if __name__ == '__main__':
     asyncio.run(main())
-
-
-
-
-
-
-
-
-
-
-
