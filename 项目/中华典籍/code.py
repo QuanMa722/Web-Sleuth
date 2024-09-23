@@ -2,44 +2,46 @@
 
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
-import aiohttp
+import logging
 import asyncio
+import aiohttp
 import time
 import os
+import re
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler('scraper.log', 'a', 'utf-8'),
+              logging.StreamHandler()]
+)
 
 ua = UserAgent()
-headers = {
-    'User-Agent': ua.random
-}
-
-
-def printt(msg):
-    nowt = time.strftime("%H:%M:%S", time.localtime())
-    for line in str(msg).split("\n"):
-        print(f"[{nowt}] {line}")
+headers = {'User-Agent': ua.random}
 
 
 async def fetch(session, book_name, url):
     try:
         async with session.get(url, headers=headers) as response:
-            if response.status == 200:
-                html_text = await response.text()
-                soup = BeautifulSoup(html_text, 'html.parser')
+            response.raise_for_status()
+            html_text = await response.text()
+            title, text = parse_html(html_text)
+            index = re.search(r"/(\d+)\.html$", url).group(1)
+            filename = os.path.join(book_name, f"{index}_{title}.txt")
 
-                title: str = soup.find('h1').get_text().strip()
-                text: str = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
+            with open(filename, mode="w", encoding="utf-8") as f:
+                f.write(text)
+            logging.info(f"Fetched: {title}")
 
-                filename = os.path.join(book_name, str(title) + '.txt')
+    except (aiohttp.ClientError, AttributeError) as e:
+        logging.error(f"Error fetching {url}: {e}")
 
-                printt(title)
-                with open(filename, mode="w", encoding="utf-8") as f:
-                    f.write(text)
 
-            else:
-                printt(f"Failed to fetch {url}, status code: {response.status}")
-
-    except aiohttp.ClientError as e:
-        printt(f"Error fetching {url}: {e}")
+def parse_html(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    title = soup.find('h1').get_text().strip()
+    text = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
+    return title, text
 
 
 async def main():
@@ -62,10 +64,9 @@ async def main():
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     try:
-        time_start = time.time()
         asyncio.run(main())
-        printt(f"Time cost: {round((time.time() - time_start), 2)}s")
-
+        logging.info(f"Time cost: {round((time.time() - start_time), 2)}s")
     except FileExistsError as error:
-        printt(f"An error occurred: {error}.")
+        logging.error(f"An error occurred: {error}.")

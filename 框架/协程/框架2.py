@@ -4,6 +4,15 @@ from fake_useragent import UserAgent
 import aiohttp
 import asyncio
 import time
+import logging
+
+# Setting Up Logging Configuration
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler('scraper.log', 'a', 'utf-8'),
+              logging.StreamHandler()]
+)
 
 # Construct request headers
 ua = UserAgent()
@@ -12,24 +21,15 @@ headers = {
 }
 
 
-# Time log
-def printt(msg):
-    nowt = time.strftime("%H:%M:%S", time.localtime())
-    for line in str(msg).split("\n"):
-        print(f"[{nowt}] {line}")
-
-
 async def fetch(session, url):
     try:
         async with session.get(url, headers=headers) as response:
-            if response.status == 200:
-                html_text = await response.text()
-                printt(f"Fetched {url}, status code {response.status}")
+            response.raise_for_status()
+            html_text = await response.text()
+            logging.info(f"Fetched {url}, status code {response.status}")
 
-            else:
-                print(f"Failed to fetch {url}, status code: {response.status}")
     except Exception as e:
-        printt(f"Error fetching {url}: {e}")
+        logging.error(f"Error fetching {url}: {e}")
 
 
 async def main():
@@ -43,6 +43,5 @@ async def main():
 if __name__ == '__main__':
     time_start = time.time()
     asyncio.run(main())
-    printt(f"Time cost: {round((time.time() - time_start), 2)}s")
-
-
+    time_cost = round((time.time() - time_start), 2)
+    logging.info(f"Time cost: {time_cost}s")  # Record running time
