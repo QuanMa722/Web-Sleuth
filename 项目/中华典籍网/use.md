@@ -1,7 +1,7 @@
 ***
 # 基于协程框架的中华典籍网爬虫（以明史为例）
 
-![img.png](img/img.png))
+![img.png](img/img.png)
 
 ## code.py
 - 输入典籍拼音 **mingshi**
