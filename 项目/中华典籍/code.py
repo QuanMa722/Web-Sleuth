@@ -14,54 +14,58 @@ headers = {
 
 
 def printt(msg):
-    nowt = time.strftime("%H:%M:%S", time.localtime(int(time.time())))
-    msgs = msg.split("\n")
-    for word in msgs:
-        print("[" + nowt + "] " + str(word))
+    nowt = time.strftime("%H:%M:%S", time.localtime())
+    for line in str(msg).split("\n"):
+        print(f"[{nowt}] {line}")
 
 
-async def fetch(session, url):
+async def fetch(session, book_name, url):
     try:
-        async with session.get(url=url, headers=headers) as response:
+        async with session.get(url, headers=headers) as response:
             if response.status == 200:
                 html_text = await response.text()
                 soup = BeautifulSoup(html_text, 'html.parser')
 
                 title: str = soup.find('h1').get_text().strip()
                 text: str = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
-                printt(title)
 
-                os.makedirs("ming", exist_ok=True)
-                filename = os.path.join("ming", str(title) + '.txt')
+                filename = os.path.join(book_name, str(title) + '.txt')
+
+                printt(title)
                 with open(filename, mode="w", encoding="utf-8") as f:
                     f.write(text)
+
             else:
-                print(f"Failed to fetch {url}, status code: {response.status}")
+                printt(f"Failed to fetch {url}, status code: {response.status}")
 
     except aiohttp.ClientError as e:
-        print(f"Error fetching {url}: {e}")
+        printt(f"Error fetching {url}: {e}")
 
 
 async def main():
-    start_time = time.time()
+    book_name = 'mingshi'
+    os.makedirs(book_name, exist_ok=False)
+
+    page_list = range(4380, 4713)
+    url_list = [f"https://www.zhonghuadiancang.com/lishizhuanji/{book_name}/{page}.html" for page in page_list]
+
+    semaphore = asyncio.Semaphore(10)
+
+    async def sem_fetch(url):
+        async with semaphore:
+            await fetch(session, book_name, url)
+            # await asyncio.sleep(1)
+
     async with aiohttp.ClientSession() as session:
-        page_list = range(4380, 4713)
-        split_pages = [list(page_list)[i:i + 20] for i in range(0, len(page_list), 20)]
+        tasks = [sem_fetch(url) for url in url_list]
+        await asyncio.gather(*tasks)
 
-        for pages in split_pages:
-            await asyncio.sleep(10)
-            tasks = []
-            for page in pages:
-                # Change the url and directory of the file to be captured.
-                url = f"https://www.zhonghuadiancang.com/lishizhuanji/mingshi/{page}.html"
-                task = fetch(session, url)
-                tasks.append(task)
-
-            await asyncio.gather(*tasks)
-
-    end_time = time.time()
-    total_time = round((end_time - start_time), 2)
-    printt(f"Total running time: {total_time} seconds")
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        time_start = time.time()
+        asyncio.run(main())
+        printt(f"Time cost: {round((time.time() - time_start), 2)}s")
+
+    except FileExistsError as error:
+        printt(f"An error occurred: {error}.")
