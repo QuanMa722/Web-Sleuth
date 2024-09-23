@@ -24,6 +24,7 @@ async def fetch(session, book_name, url):
     try:
         async with session.get(url, headers=headers) as response:
             response.raise_for_status()
+            
             html_text = await response.text()
             title, text = parse_html(html_text)
             index = re.search(r"/(\d+)\.html$", url).group(1)
