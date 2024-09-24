@@ -2,7 +2,6 @@
 
 from fake_useragent import UserAgent
 from aiohttp import ClientTimeout
-import pandas as pd
 import logging
 import asyncio
 import aiohttp

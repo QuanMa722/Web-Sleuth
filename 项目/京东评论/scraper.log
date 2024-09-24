@@ -4399,3 +4399,5 @@
 2024-09-24 12:52:22,233 - INFO - Added unique entry: {'Nickname': '海***凤', 'Time': '2024-08-09 13:30:57', 'Location': '北京', 'Content': '非常的好，上门人员验机，清理资料，非常专业，有问必答，', 'Goods': 'Apple/苹果 iPhone 15 (A3092) 128GB 黑色 支持移动联通电信5G 双卡双待手机', 'Score': 5}
 2024-09-24 12:52:22,233 - INFO - Added unique entry: {'Nickname': '莫***线', 'Time': '2024-08-09 12:38:32', 'Location': '上海', 'Content': '的情况，像素没得说，漂亮。真的不错。绝对是不二之选。产品包装完好，没有破损。我最喜欢是它支持了灵动岛。．', 'Goods': 'Apple/苹果 iPhone 15 (A3092) 128GB 黑色 支持移动联通电信5G 双卡双待手机', 'Score': 5}
 2024-09-24 12:52:22,252 - INFO - Time cost: 5.18s
+2024-09-24 15:08:05,094 - ERROR - An error occurred: The file 'comments.csv' already exists.
+2024-09-24 15:47:11,962 - ERROR - An error occurred: The file 'comments.csv' already exists.
