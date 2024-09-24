@@ -50,7 +50,7 @@ def parse_html(html_text):
 
 async def main():
     book_name = 'mingshi'
-    os.makedirs(book_name, exist_ok=True)
+    os.makedirs(book_name, exist_ok=False)
 
     page_list = range(4380, 4713)
     url_list = [f"https://www.zhonghuadiancang.com/lishizhuanji/{book_name}/{page}.html" for page in page_list]
