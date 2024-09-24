@@ -12,8 +12,10 @@ import os
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler('scraper.log', 'a', 'utf-8'),
-              logging.StreamHandler()]
+    handlers=[
+        logging.FileHandler('scraper.log', 'a', 'utf-8'),
+        logging.StreamHandler()
+    ]
 )
 
 url = 'https://club.jd.com/comment/productPageComments.action'
