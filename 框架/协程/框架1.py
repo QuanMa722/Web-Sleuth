@@ -27,16 +27,16 @@ async def fetch(session, url):
             response.raise_for_status()
             html_text = await response.text()
             message = f"Fetched {url}, status code {response.status}"
-            logging.info(message)  # 记录日志
+            logging.info(message)  # log
 
     except Exception as e:
         error_message = f"Error fetching {url}: {e}"
-        logging.error(error_message)  # 记录错误日志
+        logging.error(error_message)  # Recording error logs
 
 
 async def main():
     url_list = ['https://www.baidu.com/'] * 50
-    semaphore = asyncio.Semaphore(10)  # 限制并发限制
+    semaphore = asyncio.Semaphore(10)  # Limiting Concurrency Limits
 
     async def sem_fetch(url):
         async with semaphore:

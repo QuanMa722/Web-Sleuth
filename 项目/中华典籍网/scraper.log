@@ -1338,3 +1338,6 @@
 2024-09-23 18:10:16,187 - INFO - Fetched: 卷三百三十一·列传第二百十七·西域三
 2024-09-23 18:10:16,360 - INFO - Fetched: 卷三百三十二·列传第二百二十·西域四
 2024-09-23 18:10:16,362 - INFO - Time cost: 20.67s
+2024-09-23 19:25:17,691 - ERROR - An error occurred: [WinError 183] 当文件已存在时，无法创建该文件。: 'mingshi'.
+2024-09-23 20:00:20,324 - ERROR - An error occurred: [WinError 183] 当文件已存在时，无法创建该文件。: 'mingshi'.
+2024-09-23 21:13:48,717 - ERROR - An error occurred: [WinError 183] 当文件已存在时，无法创建该文件。: 'mingshi'.
