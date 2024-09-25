@@ -18,6 +18,11 @@ logging.basicConfig(
     ]
 )
 
+ua = UserAgent()
+headers = {
+    'User-Agent': ua.random
+}
+
 url = 'https://club.jd.com/comment/productPageComments.action'
 timeout = ClientTimeout(total=10)
 
@@ -31,11 +36,6 @@ async def fetch(session, product_id, page, score):
         'pageSize': '10',
         'isShadowSku': '0',
         'fold': '1',
-    }
-
-    ua = UserAgent()
-    headers = {
-        'User-Agent': ua.random
     }
 
     try:
