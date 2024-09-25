@@ -31,21 +31,21 @@ async def fetch(session, url):
             response.raise_for_status()
             resp_text = await response.text()
             logging.info(f"Fetched {url}, status code {response.status}")
-            await get_info(resp_text)  # Process the fetched text
+            await info(resp_text)  # Process the fetched text
 
     except Exception as e:
         logging.error(f"Error fetching {url}: {e}")
 
 
-async def get_info(resp_text):
+async def info(resp_text):
     """Process the fetched response text."""
-    await write_file(resp_text)  # Call async write_file
+    await file(text)  # Call async write_file
 
 
-async def write_file(content):
+async def file(text):
     """Asynchronously write the fetched content to a file."""
-    async with aiofiles.open('output.txt', mode='a', encoding='utf-8') as file:
-        await file.write(content + '\n')
+    async with aiofiles.open('output.txt', mode='a', encoding='utf-8') as f:
+        await f.write(text + '\n')
 
 
 async def main():

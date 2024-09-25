@@ -27,25 +27,26 @@ async def fetch(session, book_name, url):
     try:
         async with session.get(url, headers=headers) as response:
             response.raise_for_status()
-
-            html_text = await response.text()
-            title, text = parse_html(html_text)
-            index = re.search(r"/(\d+)\.html$", url).group(1)
-            filename = os.path.join(book_name, f"{index}_{title}.txt")
-
-            async with aiofiles.open(filename, mode="w", encoding="utf-8") as f:
-                await f.write(text)
-            logging.info(f"Fetched: {title}")
+            resp_text = await response.text()
+            await info(book_name, url, resp_text)
 
     except (aiohttp.ClientError, AttributeError) as e:
         logging.error(f"Error fetching {url}: {e}")
 
 
-def parse_html(html_text):
-    soup = BeautifulSoup(html_text, 'html.parser')
+async def info(book_name, url, resp_text):
+    soup = BeautifulSoup(resp_text, 'html.parser')
+    index = re.search(r"/(\d+)\.html$", url).group(1)
     title = soup.find('h1').get_text().strip()
+    filename = os.path.join(book_name, f"{index}_{title}.txt")
     text = soup.find('div', {'id': 'content', 'class': 'panel-body'}).get_text().strip()
-    return title, text
+    logging.info(f"Fetched: {title}")
+    await file(filename, text)
+
+
+async def file(filename, content):
+    async with aiofiles.open(filename, mode='a', encoding='utf-8') as f:
+        await f.write(content + '\n')
 
 
 async def main():
