@@ -1,5 +1,4 @@
 ***
-
-[中国爬虫违法案例](https://github.com/HiddenStrawberry/Crawler_Illegal_Cases_In_China)
-
+# 本仓库为个人的学习与探索，理想的职业是爬虫工程师
 ***
+
