@@ -35,6 +35,7 @@ async def fetch(session, url):
 
 
 async def info(resp_text):
+    text = resp_text
     ...
     await file(text)
 

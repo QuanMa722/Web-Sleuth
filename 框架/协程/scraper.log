@@ -1,11 +1,11 @@
-2024-09-24 15:39:16,027 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,030 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,035 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,042 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,043 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,044 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,046 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,052 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,055 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,056 - INFO - Fetched https://www.baidu.com/, status code 200
-2024-09-24 15:39:16,066 - INFO - Time cost: 0.21s
+2024-09-25 16:16:49,734 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,738 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,743 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,747 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,753 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,753 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,754 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,760 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,761 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,765 - INFO - Fetched https://www.baidu.com/, status code 200
+2024-09-25 16:16:49,770 - INFO - Time cost: 0.23s

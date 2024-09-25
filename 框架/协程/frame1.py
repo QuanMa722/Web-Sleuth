@@ -31,7 +31,7 @@ async def fetch(session, url):
             response.raise_for_status()
             resp_text = await response.text()
             # resp_json = await response.json()
-            # logging.info(f"Fetched {url}, status code {response.status}")
+            logging.info(f"Fetched {url}, status code {response.status}")
             await info(resp_text)  # Process the fetched text
 
     except Exception as e:
@@ -40,17 +40,21 @@ async def fetch(session, url):
 
 async def info(resp_text):
     """Process the fetched response text."""
+    text = resp_text
+    ...
     await file(text)  # Call async write_file
 
 
 async def file(text):
     """Asynchronously write the fetched content to a file."""
+    ...
     async with aiofiles.open('output.txt', mode='a', encoding='utf-8') as f:
         await f.write(text + '\n')
 
 
 async def main():
     """Main coroutine to manage concurrent fetch operations."""
+    ...
     url_list = ['https://www.baidu.com/'] * 10
     semaphore = asyncio.Semaphore(10)  # Limiting concurrency
 
