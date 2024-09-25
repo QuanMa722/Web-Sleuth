@@ -30,7 +30,8 @@ async def fetch(session, url):
         async with session.get(url, headers=headers) as response:
             response.raise_for_status()
             resp_text = await response.text()
-            logging.info(f"Fetched {url}, status code {response.status}")
+            # resp_json = await response.json()
+            # logging.info(f"Fetched {url}, status code {response.status}")
             await info(resp_text)  # Process the fetched text
 
     except Exception as e:
