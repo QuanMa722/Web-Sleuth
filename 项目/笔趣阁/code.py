@@ -56,7 +56,10 @@ async def main():
     os.makedirs(book_name, exist_ok=False)
 
     book_index = 11567
-    page_list = list(range(1, 64))
+    page_start = 1
+    page_end = 63
+
+    page_list = list(range(page_start, page_end + 1))
 
     url_list = [f'https://www.biqg.cc/book/{book_index}/{chapter}.html' for chapter in page_list]
     semaphore = asyncio.Semaphore(10)
