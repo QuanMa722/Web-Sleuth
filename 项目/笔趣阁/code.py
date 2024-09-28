@@ -30,23 +30,23 @@ async def fetch(session, url, book_name):
             response.raise_for_status()
             resp_text = await response.text()
             # logging.info(f"Fetched {url}, status code {response.status}")
-            await info(url, resp_text, book_name)
+            await parse(url, resp_text, book_name)
 
     except Exception as e:
         logging.error(f"Error fetching {url}: {e}")
 
 
-async def info(url, resp_text, book_name):
+async def parse(url, resp_text, book_name):
     tree = etree.HTML(resp_text)
     index = url.split('/')[-1].split('.')[0]
     title = tree.xpath('//h1[@class="wap_none"]//text()')[0]
     text = tree.xpath('//div[@id="chaptercontent"]//text()')
     file_name = os.path.join(book_name, f"{index}_{title}.txt")
     logging.info(f"Fetched: {title}")
-    await file(file_name, text)
+    await pipline(file_name, text)
 
 
-async def file(file_name, text):
+async def pipline(file_name, text):
     async with aiofiles.open(file_name, mode="a", encoding="utf-8") as f:
         await f.write('\n'.join(text) + '\n')
 

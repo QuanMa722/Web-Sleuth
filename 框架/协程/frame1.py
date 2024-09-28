@@ -32,20 +32,20 @@ async def fetch(session, url):
             resp_text = await response.text()
             # resp_json = await response.json()
             logging.info(f"Fetched {url}, status code {response.status}")
-            await info(resp_text)  # Process the fetched text
+            await parse(resp_text)  # Process the fetched text
 
     except Exception as e:
         logging.error(f"Error fetching {url}: {e}")
 
 
-async def info(resp_text):
+async def parse(resp_text):
     """Process the fetched response text."""
     text = resp_text
     ...
-    await file(text)  # Call async write_file
+    await pipline(text)  # Call async write_file
 
 
-async def file(text):
+async def pipline(text):
     """Asynchronously write the fetched content to a file."""
     ...
     async with aiofiles.open('output.txt', mode='a', encoding='utf-8') as f:

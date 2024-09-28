@@ -52,7 +52,7 @@ async def fetch(session, product_id, page, score):
         return {'comments': []}
 
 
-async def file(data_list, filename):
+async def pipline(data_list, filename):
     try:
         if os.path.isfile(filename):
             raise FileExistsError(f"The file '{filename}' already exists")
@@ -103,7 +103,7 @@ async def main(file_path, product_id):
                     'Score': comment['score']
                 })
 
-        await file(data_to_write, file_path)
+        await pipline(data_to_write, file_path)
 
 
 if __name__ == '__main__':
