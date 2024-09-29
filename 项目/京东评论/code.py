@@ -111,6 +111,7 @@ if __name__ == '__main__':
     try:
         file_path = 'comments.csv'
         product_id = '100066896356'
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(main(file_path, product_id))
         logging.info(f"Time cost: {round((time.time() - start_time), 2)}s")
     except FileExistsError as error:

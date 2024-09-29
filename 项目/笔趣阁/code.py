@@ -76,6 +76,7 @@ async def main():
 if __name__ == '__main__':
     start_time = time.time()
     try:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(main())
         logging.info(f"Time cost: {round((time.time() - start_time), 2)}s")
     except Exception as error:
