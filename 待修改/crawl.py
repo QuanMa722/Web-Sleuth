@@ -29,21 +29,19 @@ def get_resp() -> requests.Response:
     if status_code != 200:
         print("An error with response.")
 
-    return response
+    get_data(response)
 
 
-def get_data():
+def get_data(response):
     """
     get the ming(top search and hot search)
     :return: None
     """
 
-    response = get_resp()
-
     with open(file="search.txt", mode="a", encoding="utf-8") as f:
 
         search_json = json.loads(response.text)
-        search_top: str = search_json["data"]["hotgovs"][0]["note"]
+        search_top: str = search_json["data"]["realtime"][0]["note"]
         f.write(search_top + "\n")
         print(f"top search: {search_top}")
 
@@ -94,7 +92,7 @@ def main():
 
     try:
         # get the ming and write to a txt 文件读写
-        get_data()
+        get_resp()
 
         # wordcloud
         search_wordcloud()
