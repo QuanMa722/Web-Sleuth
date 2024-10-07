@@ -34,10 +34,6 @@ def plot_word_counts(word_counts, top_n=20):
     words, counts = zip(*most_common_words)
     plt.figure(figsize=(12, 6))
     plt.scatter(words, counts, marker='o', c='k')
-    # plt.title(f'Top {top_n} Words Frequency', fontsize=14)
-    # plt.xlabel('Words', fontsize=12)
-    # plt.ylabel('Frequency', fontsize=12)
-    # plt.xticks(rotation=45)
     plt.gca().spines['top'].set_visible(False)
     plt.gca().spines['right'].set_visible(False)
     plt.grid(False)
@@ -49,6 +45,5 @@ if __name__ == '__main__':
     try:
         print_word_counts(word_counts)
         plot_word_counts(word_counts)
-
     except Exception as error:
         print(f"An error occurred: {error}.")

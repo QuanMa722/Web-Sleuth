@@ -47,7 +47,6 @@ async def fetch(session, file_name, url_info):
         async with session.get(f"http://www.hxlib.cn/{url_info[2]}", headers=headers) as response:
             response.raise_for_status()
             resp_text = await response.text()
-            # logging.info(f"Fetched {url_info}, status code {response.status}")
             await parse(file_name, url_info, resp_text)
 
     except Exception as e:
@@ -73,7 +72,9 @@ async def main():
     file_name = '《明史纪事本末》'
     os.makedirs(file_name, exist_ok=False)
 
-    home_url = 'http://www.hxlib.cn/book/b3fcec1ad41c275e58a83d09141d9ba2.html'
+    book_code = 'b3fcec1ad41c275e58a83d09141d9ba2'
+
+    home_url = f'http://www.hxlib.cn/book/{book_code}.html'
     url_infor = infor(home_url)
 
     semaphore = asyncio.Semaphore(10)
