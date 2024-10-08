@@ -5,7 +5,9 @@ import ast
 with open('news.txt', 'r', encoding='utf-8') as f:
     news_list = f.readlines()
 
-# kind_list = ['world', 'china', 'business', 'lens', 'technology', 'science', 'health', 'education', 'culture', 'style', 'travel', 'real-estate', 'opinion'
+# kind_list = ['world', 'china', 'business', 'lens', 'technology', 'science', 'health', 'education', 'culture',
+# 'style', 'travel', 'real-estate', 'opinion'
+
 china_news = []
 for news in news_list:
     try:

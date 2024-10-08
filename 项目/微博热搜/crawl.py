@@ -17,16 +17,8 @@ def get_hot_searches() -> None:
             response.raise_for_status()
             process_search_data(response.json())
             break
-        except requests.HTTPError as e:
-            if response.status_code == 404:
-                print("404 Not Found. Retrying...")
-                get_hot_searches()
-                break
-            else:
-                print(f"An error occurred while fetching data: {e}")
-                break
-        except requests.RequestException as e:
-            print(f"An error occurred while fetching data: {e}")
+        except requests.HTTPError:
+            get_hot_searches()
             break
 
 
@@ -37,7 +29,7 @@ def process_search_data(data: dict) -> None:
             for search in searches:
                 note = search["note"]
                 f.write(note + "\n")
-                print(f"Hot search: {note}")
+                print(f"hot search: {note}")
     except KeyError as e:
         print(f"Missing expected key in response data: {e}")
 
