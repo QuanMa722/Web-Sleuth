@@ -16,9 +16,9 @@ warnings.filterwarnings("ignore")
 
 
 class News:
-    def __init__(self, news_url):
-        self.news_url = news_url
-        self.stopwords_list = self.read_file("stopwords.txt")
+    def __init__(self, url):
+        self.url: str = url
+        self.stopwords_list: list[str] = self.read_file("stopwords.txt")
 
     @staticmethod
     def read_file(file_path):
@@ -26,7 +26,7 @@ class News:
             return file.read().splitlines()
 
     def run(self):
-        extracted_content = self.extract_domain(self.news_url)
+        extracted_content = self.extract_domain(self.url)
         supported_domains = {'news.cctv.com', 'news.sina.com.cn', 'www.thepaper.cn'}
 
         if extracted_content in supported_domains:
@@ -44,7 +44,7 @@ class News:
 
     def fetch(self):
         try:
-            response = requests.get(self.news_url)
+            response = requests.get(self.url)
             response.raise_for_status()
             response.encoding = "utf-8"
             html_content = response.text
@@ -95,7 +95,8 @@ class News:
         sorted_tfidf_list = sorted(tfidf_dict.items(), key=lambda item: item[1], reverse=True)[:10]
         return sorted_tfidf_list
 
-    def textrank_result(self, text_str):
+    @staticmethod
+    def textrank_result(text_str):
         jieba.analyse.set_stop_words("stopwords.txt")
         top_keywords = jieba.analyse.textrank(text_str, topK=10, withWeight=True)
         return top_keywords
@@ -120,7 +121,6 @@ class News:
 
 
 if __name__ == '__main__':
-    news_url = input('news-url:')
+    news_url = 'https://news.sina.com.cn/w/2024-10-17/doc-incsvfqp3066425.shtml'
     news = News(news_url)
     news.run()
-
