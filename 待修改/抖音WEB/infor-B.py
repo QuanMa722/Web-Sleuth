@@ -116,7 +116,7 @@ class Task:
     def pipline(video_infor):
         video_id = video_infor['video_id']
         filename = f'{video_id}.json'
-        os.makedirs('../VIDEO', exist_ok=True)
+        os.makedirs('VIDEO', exist_ok=True)
 
         with open(f'VIDEO/{filename}', mode='w', encoding='utf-8') as output_file:
             json.dump(video_infor, output_file, ensure_ascii=False, indent=4)
