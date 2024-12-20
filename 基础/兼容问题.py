@@ -6,16 +6,16 @@ url = "https://www.baidu.com"
 
 response = requests.get(url=url)
 
-# It will be garbled.
+# 乱码
 print(response.text)
 
-# the solution1
+# 方法 1
 print(response.content.decode())
 
-# the solution2
+# 方法 2
 response.encoding = "utf-8"
 print(response.text)
 
-# the solution3
+# 方法 3
 response.encoding = response.apparent_encoding
 print(response.text)

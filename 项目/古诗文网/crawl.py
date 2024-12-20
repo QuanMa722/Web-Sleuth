@@ -25,7 +25,7 @@ headers = {
 }
 
 
-def infor(home_url):
+async def infor(home_url):
     resp = requests.get(url=home_url, headers=headers)
     resp.encoding = "utf-8"
     soup = BeautifulSoup(resp.text, 'html.parser')
@@ -75,7 +75,7 @@ async def main():
     book_code = 'b3fcec1ad41c275e58a83d09141d9ba2'
 
     home_url = f'http://www.hxlib.cn/book/{book_code}.html'
-    url_infor = infor(home_url)
+    url_infor = await infor(home_url)
 
     semaphore = asyncio.Semaphore(10)
 
