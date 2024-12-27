@@ -62,6 +62,9 @@ async def fetch(session, video_id):
 async def parse(video_data):
     aweme_id = video_data['aweme_id']
     desc = video_data['desc']
+    match = re.match(r'^(.*?)#', desc)
+    if match:
+        desc = match.group(1).strip()
     create_time = str(datetime.datetime.fromtimestamp(video_data['create_time']))
     author = video_data['author']['nickname']
     sec_uid = video_data['author']['sec_uid']
