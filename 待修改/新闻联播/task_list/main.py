@@ -59,9 +59,9 @@ if __name__ == '__main__':
     logging.info('Start fetching')
     start_time = time.time()
 
-    for year in range(2016, 2025):
-        for month in range(1, 13):
-            get_url(year, month)
+    # for year in range(2016, 2025):
+    #     for month in range(1, 13):
+    #         get_url(year, month)
 
     # get_url(2015, 12)
     # get_url(2025, 1)
