@@ -12,7 +12,7 @@ headers = {
 }
 
 # Define the target URL
-url = 'http://mrxwlb.com/2015/12/28/2015%e5%b9%b412%e6%9c%8828%e6%97%a5%e6%96%b0%e9%97%bb%e8%81%94%e6%92%ad%e6%96%87%e5%ad%97%e7%89%88/'
+url = 'http://mrxwlb.com/2024/07/22/2024年07月22日新闻联播文字版/'
 
 # Send GET request to the URL
 response = requests.get(url, headers=headers)
@@ -55,7 +55,8 @@ if current_title:
 # Filter out news items with unwanted titles (e.g., '国内联播快讯', '国际联播快讯')
 filtered_news_items = [
     news for news in news_items[1:]
-    if news['title'] not in ['国内联播快讯', '国际联播快讯', '联播快讯']
+    if news['title'] not in ['国内联播快讯', '国际联播快讯', '联播快讯', '网站：http://mrxwlb.com/',
+                             '微信搜索：mrxwlb 关注我们！']
 ]
 
 # Print the filtered news items to the console
@@ -65,5 +66,5 @@ for news in filtered_news_items:
     print()
 
 # Save the filtered news items to a JSON file
-with open('20181214.json', 'w', encoding='utf-8') as f:
+with open('20240722.json', 'w', encoding='utf-8') as f:
     json.dump(filtered_news_items, f, ensure_ascii=False, indent=4)  # Write in JSON format
