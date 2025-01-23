@@ -121,6 +121,6 @@ class News:
 
 
 if __name__ == '__main__':
-    news_url = 'https://news.sina.com.cn/2024-11-06/doc-incvcmaf8606713.shtml'
+    news_url = 'https://news.sina.com.cn/w/2025-01-23/doc-inefxxux6056694.shtml'
     news = News(news_url)
     news.run()
