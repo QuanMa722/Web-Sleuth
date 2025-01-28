@@ -314,7 +314,7 @@ def comments_analyse():
 
     comments_statistic(comments)
     comments_wordcloud(comments)
-    comments_topic(comments)
+    # comments_topic(comments)
 
 
 def main():

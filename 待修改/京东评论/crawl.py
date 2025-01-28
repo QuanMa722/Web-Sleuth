@@ -13,39 +13,33 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('scraper.log', 'a', 'utf-8'),
+        # logging.FileHandler('scraper.log', 'a', 'utf-8'),
         logging.StreamHandler()
     ]
 )
 
-ua = UserAgent()
-headers = {
-    'User-Agent': ua.random
-}
-
-url = 'https://club.jd.com/comment/productPageComments.action'
-timeout = ClientTimeout(total=10)
-
-
 async def fetch(session, product_id, page, score):
-    params = {
-        'productId': product_id,
-        'score': score,
-        'sortType': '5',
-        'page': page,
-        'pageSize': '10',
-        'isShadowSku': '0',
-        'fold': '1',
-    }
-
     try:
-        async with session.get(url, headers=headers, params=params, timeout=timeout) as response:
+        url = 'https://club.jd.com/comment/productPageComments.action'
+
+        ua = UserAgent()
+        headers = {
+            'User-Agent': ua.random
+        }
+
+        params = {
+            'productId': product_id,
+            'score': score,
+            'sortType': '5',
+            'page': page,
+            'pageSize': '10',
+            'isShadowSku': '0',
+            'fold': '1',
+        }
+
+        async with session.get(url, headers=headers, params=params) as response:
             response.raise_for_status()
             return await response.json()
-
-    except asyncio.TimeoutError:
-        logging.warning(f"Timeout fetching page {page} for score {score}")
-        return {'comments': []}
 
     except aiohttp.ClientResponseError as e:
         logging.error(f"Error fetching page {page} for score {score}: {e}")

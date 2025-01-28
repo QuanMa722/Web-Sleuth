@@ -47,7 +47,7 @@ async def pipeline(text):
 
 
 def task():
-    url_list = ['https://www.baidu.com/'] * 1000
+    url_list = ['https://www.baidu.com/'] * 100
     return url_list
 
 

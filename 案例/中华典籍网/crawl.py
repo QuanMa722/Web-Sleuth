@@ -14,19 +14,17 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('scraper.log', 'a', 'utf-8'),
+        # logging.FileHandler('scraper.log', 'a', 'utf-8'),
         logging.StreamHandler()
     ]
 )
 
-ua = UserAgent()
-headers = {
-    'User-Agent': ua.random
-}
-
-
 async def fetch(session, file_name, url):
     try:
+        ua = UserAgent()
+        headers = {
+            'User-Agent': ua.random
+        }
         async with session.get(url, headers=headers) as response:
             response.raise_for_status()
             resp_text = await response.text()
@@ -74,10 +72,11 @@ async def main():
 
 
 if __name__ == '__main__':
+    # https://www.zhonghuadiancang.com/
     start_time = time.time()
     try:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(main())
-        logging.info(f"Time cost: {round((time.time() - start_time), 2)}s")
+        print(f"Time cost: {round((time.time() - start_time), 2)}s")
     except FileExistsError as error:
         logging.error(f"An error occurred: {error}.")
