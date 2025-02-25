@@ -21,7 +21,6 @@ import sys
 import re
 import os
 
-# Suppress warnings and set logging level for jieba
 warnings.filterwarnings("ignore")
 jieba.setLogLevel(logging.INFO)
 
@@ -90,7 +89,7 @@ def fetch(movie_id):
     try:
         all_comments = []
 
-        for page in range(0, 381, 20):  # This can be adjusted if you want to limit the number of pages
+        for page in range(0, 381, 20):
 
             url = f'https://movie.douban.com/subject/{movie_id}/comments?start={page}&limit=20&&sort=new_score&status=P'
             response = requests.get(url, headers=headers, cookies=cookies)
@@ -100,14 +99,15 @@ def fetch(movie_id):
 
             logging.info(f'Fetched page {page + 20}')
             all_comments.extend(parse(response_text))
+        print('-' * 100)
         pipline(all_comments)
+        print('-' * 100)
 
     except requests.RequestException as e:
         logging.error(f"Error fetching: {e}")
 
 
 def parse(response_text):
-    # parse data
     tree = etree.HTML(response_text)
     comment_list = tree.xpath('//div[@class="comment-item "]')
     comments_list = []
@@ -143,7 +143,6 @@ def parse(response_text):
 
 
 def pipline(comments_list):
-    # store data
     try:
 
         with open('comments.json', 'a', encoding='utf-8') as file:
@@ -171,22 +170,17 @@ def comments_statistic(comments):
             total_comments += count
 
     average_star_level = total_star_sum / total_comments if total_comments > 0 else 0
-
-    # 按年份统计评论数量
     year_counter = defaultdict(int)
     for comment in comments:
         time_str = comment['time']  # 假设时间字段为 'time'
         year = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S').year  # 提取年份
         year_counter[year] += 1
 
-    # 准备数据
     years = sorted(year_counter.keys())
     year_counts = [year_counter[year] for year in years]
 
-    # 创建画布，设置为1行2列的子图
     fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 
-    # 图1: 星级分布
     axs[0].bar(levels, counts, color='skyblue', edgecolor='black')
     axs[0].set_title('Star Level Distribution', fontweight='bold')
     axs[0].set_xlabel('Star Level', fontweight='bold')
@@ -195,7 +189,6 @@ def comments_statistic(comments):
     axs[0].axvline(x=average_star_level, color='red', linestyle='--', label=f'Average Level: {average_star_level:.2f}')
     axs[0].legend()
 
-    # 图2: 按年份统计评论数量
     axs[1].plot(years, year_counts, marker='o', linestyle='--', color='k', label='Comments Per Year')
     max_count = max(year_counts)
     max_year = years[year_counts.index(max_count)]
@@ -208,55 +201,48 @@ def comments_statistic(comments):
     axs[1].grid(True)
     axs[1].legend()
 
-    # 显示图表
-    plt.tight_layout()  # 自动调整子图布局
+    plt.tight_layout()
     plt.savefig('distribution.png', dpi=300, bbox_inches='tight')
     plt.show()
 
 
 def comments_wordcloud(comments):
-    # 假设 comments 是一个字典列表
+
     comments_list = [comment['comment'] for comment in comments]
 
-    # 将评论列表中的每条评论进行中文分词
     segmented_text = " ".join([" ".join(jieba.cut(comment)) for comment in comments_list])
 
-    # 加载停用词列表
-    with open('stopwords.txt', 'r', encoding='utf-8') as file:
+
+    with open('repo/stopwords.txt', 'r', encoding='utf-8') as file:
         stopwords = set(file.read().splitlines())
 
-    # 创建词云对象，设置停用词
+
     wordcloud = WordCloud(
         width=800,
         height=400,
         background_color='white',
         font_path='simhei.ttf',
-        stopwords=stopwords  # 设置停用词
+        stopwords=stopwords
     ).generate(segmented_text)
 
-    # 绘制词云图
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis('off')  # 关闭坐标轴
+    plt.axis('off')
     plt.savefig('wordcloud.png', dpi=300, bbox_inches='tight')
     plt.show()
 
 
 def comments_topic(comments):
     try:
-        # Prepare data and stopwords
         comments_list = [comment['comment'] for comment in comments]
 
-        # Load stopwords
-        with open(file="stopwords.txt", mode="r", encoding="utf-8") as stop_file:
+        with open(file="repo/stopwords.txt", mode="r", encoding="utf-8") as stop_file:
             stopwords_list = stop_file.read().splitlines()
 
-        # Initialize embedding model
         embedding_model = SentenceTransformer(
             "thenlper/gte-base-zh"
         )
 
-        # Preprocess and embed the comments
         corpus_list = []
         for sentence in comments_list:
             corpus = jieba.lcut(sentence)
@@ -265,7 +251,6 @@ def comments_topic(comments):
 
         embeddings = embedding_model.encode(corpus_list, show_progress_bar=True)
 
-        # Initialize UMAP and HDBSCAN models
         umap_model = UMAP(
             n_neighbors=15,
             n_components=5,
